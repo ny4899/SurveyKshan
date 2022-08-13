@@ -1,0 +1,443 @@
+import React, { useRef, useState } from "react";
+import { auth } from "../../firebaseConfig";
+import { signOut } from "firebase/auth";
+
+import { NavLink } from "react-router-dom";
+import "./top-nav.scss";
+import "./side-nav.scss";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faEnvelope,
+  faGear,
+  faEllipsisVertical,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+
+import logo from "../../images/logo.png";
+
+const Navbar = ({ toggleClass }) => {
+  const [rightNavDisplay, setRightNavDisplay] = useState(false);
+  const refnavcontainer = useRef(null);
+
+  const toggleNavClass = () => {
+    const element = refnavcontainer.current;
+    const withHideNav = "sidebar__wrapper hide__nav";
+    const withOutHideNav = "sidebar__wrapper";
+
+    if (element.className === withHideNav) {
+      element.className = withOutHideNav;
+    } else if (element.className === withOutHideNav) {
+      element.className = withHideNav;
+    }
+  };
+
+  const navHideShow = () => {
+    toggleClass();
+    toggleNavClass();
+  };
+
+  const navHideOnSm = () => {
+    if (window.innerWidth <= 992) {
+      navHideShow();
+    }
+  };
+
+  const logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth);
+  };
+
+  return (
+    <>
+      <div className="nav__wrapper">
+        <div className="nav__inner__wrapper px-3 px-sm-4">
+          <div className="nav__left">
+            <FontAwesomeIcon
+              onClick={navHideShow}
+              icon={faBars}
+              className="hum__icon"
+            />
+             <NavLink to="/" >
+            <img className="main__logo" src={logo} alt="" />
+            </NavLink>
+          </div>
+          <div
+            className={
+              rightNavDisplay ? "nav__right " : "nav__right nav__right__toggle"
+            }
+          >
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown"
+                data-bs-display="static"
+                aria-expanded="false"
+              >
+                Admin
+              </button>
+              <ul className="dropdown-menu dropdown-menu-lg-end">
+                <li>
+                  <NavLink to="/assignedStations" className="dropdown-item">
+                    View Assigned Stations
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/requestedAssets" className="dropdown-item">
+                    Requested Assets
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/editProfile" className="dropdown-item">
+                    Edit Your Profile
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/changePassword" className="dropdown-item">
+                    Change Password
+                  </NavLink>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <a onClick={logout} className="dropdown-item">
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown"
+                data-bs-display="static"
+                aria-expanded="false"
+              >
+                create New
+              </button>
+              <ul className="dropdown-menu dropdown-menu-lg-end">
+                <li>
+                  <NavLink to="/createNewStation" className="dropdown-item">
+                    Station
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/createNewLicense" className="dropdown-item">
+                    License
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/createNewDevice" className="dropdown-item">
+                    Device
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/createNewConsumable" className="dropdown-item">
+                    Consumable
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/createNewParameter" className="dropdown-item">
+                    Parameter
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/createNewUser" className="dropdown-item">
+                    User
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+            <div className="btn-group mx-2">
+              <button
+                type="button"
+                className="btn btn-sm dropdown-toggle mail__icon__btn"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <a href="#" className="pt-1">
+                  <FontAwesomeIcon icon={faEnvelope} className="fs-5" />
+                </a>
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end">
+                <p>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Recusandae praesentium cupiditate repellat inventore corrupti
+                  soluta.
+                </p>
+              </ul>
+            </div>
+            <a href="#">
+              <FontAwesomeIcon icon={faGear} className="fs-5" />
+            </a>
+            <div className="ms-4 cross__icon__box pt-1">
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                onClick={() => {
+                  setRightNavDisplay(false);
+                }}
+                className="fs-2"
+              />
+            </div>
+          </div>
+          <div className="dot__container">
+            <FontAwesomeIcon
+              onClick={() => {
+                setRightNavDisplay(true);
+              }}
+              icon={faEllipsisVertical}
+              className="fs-5"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div ref={refnavcontainer} className="sidebar__wrapper">
+        <div className="sidebar__inner__wrapper">
+          <div className="accordion" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Dashboard
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/stations"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Stations
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/licenses"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Licenses
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/devices"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Devices
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/consumables"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Consumables
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/parameters"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Parameters
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/people"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  People
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/maintenance"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Maintenance
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <NavLink
+                  to="/calibration"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active accordion-button px-3 px-sm-4"
+                      : "accordion-button px-3 px-sm-4"
+                  }
+                  onClick={navHideOnSm}
+                >
+                  Calibration
+                </NavLink>
+              </h2>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingOne">
+                <button
+                  className="accordion-button collapsed px-3 px-sm-4"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="false"
+                  aria-controls="collapseOne"
+                >
+                  Settings
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body p-0">
+                  <NavLink
+                    to="/audit"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3 px-sm-4"
+                        : "accordion-button px-3 px-sm-4"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Audit
+                  </NavLink>
+                  <NavLink
+                    to="/cameraconfig"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3 px-sm-4"
+                        : "accordion-button px-3 px-sm-4"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Camera Config
+                  </NavLink>
+                  <NavLink
+                    to="/datasettings"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3 px-sm-4"
+                        : "accordion-button px-3 px-sm-4"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Data Settings
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingTwo">
+                <button
+                  className="accordion-button collapsed px-3 px-sm-4"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  Reports
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body p-0">
+                  <NavLink
+                    to="/cpcblog"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3 px-sm-4"
+                        : "accordion-button px-3 px-sm-4"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    CPCB log
+                  </NavLink>
+                  <NavLink
+                    to="/hrpcblog"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3 px-sm-4"
+                        : "accordion-button px-3 px-sm-4"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    HRPCB log
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Navbar;
