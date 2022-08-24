@@ -1,6 +1,7 @@
 {
   "name": "react_json-server_crud",
   "version": "0.1.0",
+  "homepage": "https://ny4899.github.io/SurveyKshan",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
@@ -23,6 +24,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
