@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { auth } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import "./top-nav.scss";
 import "./side-nav.scss";
 
@@ -52,7 +52,7 @@ const Navbar = ({ toggleClass }) => {
   return (
     <>
       <div className="nav__wrapper">
-        <div className="nav__inner__wrapper px-3 px-sm-4">
+        <div className="nav__inner__wrapper px-3">
           <div className="nav__left">
             <FontAwesomeIcon
               onClick={navHideShow}
@@ -78,7 +78,7 @@ const Navbar = ({ toggleClass }) => {
               >
                 Admin
               </button>
-              <ul className="dropdown-menu dropdown-menu-lg-end">
+              <ul className="dropdown-menu dropdown-menu-lg-end shadow">
                 <li>
                   <NavLink to="/assignedStations" className="dropdown-item">
                     View Assigned Stations
@@ -119,7 +119,7 @@ const Navbar = ({ toggleClass }) => {
               >
                 create New
               </button>
-              <ul className="dropdown-menu dropdown-menu-lg-end">
+              <ul className="dropdown-menu dropdown-menu-lg-end shadow">
                 <li>
                   <NavLink to="/createNewStation" className="dropdown-item">
                     Station
@@ -163,8 +163,8 @@ const Navbar = ({ toggleClass }) => {
                   <FontAwesomeIcon icon={faEnvelope} className="fs-5" />
                 </a>
               </button>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <p>
+              <ul className="dropdown-menu dropdown-menu-end shadow">
+                <p className="m-2">
                   Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                   Recusandae praesentium cupiditate repellat inventore corrupti
                   soluta.
@@ -195,7 +195,6 @@ const Navbar = ({ toggleClass }) => {
           </div>
         </div>
       </div>
-
       <div ref={refnavcontainer} className="sidebar__wrapper">
         <div className="sidebar__inner__wrapper">
           <div className="accordion" id="accordionExample">
@@ -205,8 +204,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -220,8 +219,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/stations"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -235,8 +234,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/licenses"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -250,8 +249,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/devices"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -265,8 +264,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/consumables"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -280,8 +279,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/parameters"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -295,8 +294,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/people"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -310,8 +309,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/maintenance"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -325,8 +324,8 @@ const Navbar = ({ toggleClass }) => {
                   to="/calibration"
                   className={({ isActive }) =>
                     isActive
-                      ? "active accordion-button px-3 px-sm-4"
-                      : "accordion-button px-3 px-sm-4"
+                      ? "active accordion-button px-3"
+                      : "accordion-button px-3"
                   }
                   onClick={navHideOnSm}
                 >
@@ -337,7 +336,7 @@ const Navbar = ({ toggleClass }) => {
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
-                  className="accordion-button collapsed px-3 px-sm-4"
+                  className="accordion-button collapsed px-3"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseOne"
                   aria-expanded="false"
@@ -357,8 +356,8 @@ const Navbar = ({ toggleClass }) => {
                     to="/audit"
                     className={({ isActive }) =>
                       isActive
-                        ? "active accordion-button px-3 px-sm-4"
-                        : "accordion-button px-3 px-sm-4"
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
                     }
                     onClick={navHideOnSm}
                   >
@@ -368,8 +367,8 @@ const Navbar = ({ toggleClass }) => {
                     to="/cameraconfig"
                     className={({ isActive }) =>
                       isActive
-                        ? "active accordion-button px-3 px-sm-4"
-                        : "accordion-button px-3 px-sm-4"
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
                     }
                     onClick={navHideOnSm}
                   >
@@ -379,8 +378,8 @@ const Navbar = ({ toggleClass }) => {
                     to="/datasettings"
                     className={({ isActive }) =>
                       isActive
-                        ? "active accordion-button px-3 px-sm-4"
-                        : "accordion-button px-3 px-sm-4"
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
                     }
                     onClick={navHideOnSm}
                   >
@@ -392,7 +391,7 @@ const Navbar = ({ toggleClass }) => {
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingTwo">
                 <button
-                  className="accordion-button collapsed px-3 px-sm-4"
+                  className="accordion-button collapsed px-3"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseTwo"
                   aria-expanded="false"
@@ -412,8 +411,8 @@ const Navbar = ({ toggleClass }) => {
                     to="/cpcblog"
                     className={({ isActive }) =>
                       isActive
-                        ? "active accordion-button px-3 px-sm-4"
-                        : "accordion-button px-3 px-sm-4"
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
                     }
                     onClick={navHideOnSm}
                   >
@@ -423,8 +422,8 @@ const Navbar = ({ toggleClass }) => {
                     to="/hrpcblog"
                     className={({ isActive }) =>
                       isActive
-                        ? "active accordion-button px-3 px-sm-4"
-                        : "accordion-button px-3 px-sm-4"
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
                     }
                     onClick={navHideOnSm}
                   >
@@ -436,6 +435,7 @@ const Navbar = ({ toggleClass }) => {
           </div>
         </div>
       </div>
+      <Outlet />
     </>
   );
 };

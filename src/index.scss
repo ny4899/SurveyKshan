@@ -10,7 +10,8 @@ p,
 button,
 i,
 span,
-div {
+div,
+input {
   color: v.$black;
 }
 *{
@@ -30,4 +31,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+fieldset, legend {
+  all: revert !important;
+
+}
+legend{
+  background-color: v.$bodybg !important;
+  margin-bottom: 15px !important;
+  border-radius: 7px !important;
+  font-size: 25px !important;
+  font-weight: 500 !important;
+  padding: 10px 10px !important;
+  color: v.$black !important;
 }

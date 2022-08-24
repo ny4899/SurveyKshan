@@ -7,40 +7,38 @@ import { auth } from "./firebaseConfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 // -----
-import LoginForm from "./components/LoginForm";
-import Loading from "./components/Loading";
-import Navbar from "./components/navbar/Navbar";
-import Dashboard from "./pages/Dashboard";
-import Stations from "./pages/Stations";
-import Licenses from "./pages/Licenses";
-import Devices from "./pages/Devices";
-import Consumables from "./pages/Consumables";
-import Parameters from "./pages/Parameters";
-import People from "./pages/People";
-import Maintenance from "./pages/Maintenance";
-import Calibration from "./pages/Calibration";
-// settings pages
-import Audit from "./pages/Settings/Audit";
-import CameraConfig from "./pages/Settings/CameraConfig";
-import DataSettings from "./pages/Settings/DataSettings";
-// reports pages
-import CPCBlog from "./pages/Reports/CPCBlog";
-import HRPCBlog from "./pages/Reports/HRPCBlog";
-// create new
-import CreateNewStation from "./pages/CreateNew/Station";
-import CreateNewLicense from "./pages/CreateNew/License";
-import CreateNewDevice from "./pages/CreateNew/Device";
-import CreateNewConsumable from "./pages/CreateNew/Consumable";
-import CreateNewParameter from "./pages/CreateNew/Parameter";
-import CreateNewUser from "./pages/CreateNew/User";
-// Admin
-import AssignedStations from "./pages/Admin/AssignedStations";
-import RequestedAssets from "./pages/Admin/RequestedAssets";
-import EditProfile from "./pages/Admin/EditProfile";
-import ChangePassword from "./pages/Admin/ChangePassword";
-// -----
-import Nopage from "./pages/Nopage";
+import { LoginForm, Loading, Navbar } from "./components";
 
+import {
+  Dashboard,
+  Stations,
+  Licenses,
+  Devices,
+  Consumables,
+  Parameters,
+  People,
+  Maintenance,
+  Calibration,
+  Audit,
+  CameraConfig,
+  DataSettings,
+  CPCBlog,
+  HRPCBlog,
+  CreateNewConsumable,
+  CreateNewStation,
+  CreateNewLicense,
+  CreateNewDevice,
+  CreateNewParameter,
+  CreateNewUser,
+  AssignedStations,
+  RequestedAssets,
+  EditProfile,
+  ChangePassword,
+  Nopage,
+} from "./pages"
+import Graph from "./components/Dashboard/ContentContainer/Graph";
+import Map from "./components/Dashboard/ContentContainer/Map";
+import Data from "./components/Dashboard/ContentContainer/Data";
 function App() {
   const refUserName = useRef();
   const refPassword = useRef();
@@ -62,7 +60,7 @@ function App() {
         refPassword.current.value
       );
     } catch (error) {
-      setError(error.code)
+      setError(error.code);
     }
   };
 
@@ -100,8 +98,12 @@ function App() {
       <Navbar toggleClass={toggleClass} />
       <div ref={refmaincontainer} className="main__wrapper">
         <Routes>
-          <Route index element={<Dashboard />} />
-          <Route path="/licenses" element={<Licenses />} />
+          <Route element={<Dashboard />}>
+            <Route index element={<Graph />} />
+            <Route path="map" element={<Map />} />
+            <Route path="data" element={<Data />} />
+          </Route>
+          <Route path="/licenses" element={<Licenses />}></Route>
           <Route path="/stations" element={<Stations />} />
           <Route path="devices" element={<Devices />} />
           <Route path="consumables" element={<Consumables />} />

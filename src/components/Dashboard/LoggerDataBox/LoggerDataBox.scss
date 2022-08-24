@@ -1,0 +1,24 @@
+.box__bg {
+  background-color: rgb(214, 255, 214);
+  display: flex;
+  flex-direction: column;
+  // border: 2px solid rgb(33, 171, 33);
+  .value__bar__bg {
+    background-color: rgb(169, 253, 169);
+    display: flex;
+    flex-direction: column;
+    p,
+    h3 {
+      text-align: center;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
+  p {
+    margin: 0;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+}
