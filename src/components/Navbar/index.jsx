@@ -199,7 +199,7 @@ const Navbar = ({ toggleClass }) => {
         <div className="sidebar__inner__wrapper">
           <div className="accordion" id="accordionExample">
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
@@ -214,7 +214,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/stations"
                   className={({ isActive }) =>
@@ -229,7 +229,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/licenses"
                   className={({ isActive }) =>
@@ -244,7 +244,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/devices"
                   className={({ isActive }) =>
@@ -259,7 +259,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/consumables"
                   className={({ isActive }) =>
@@ -274,7 +274,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/parameters"
                   className={({ isActive }) =>
@@ -289,7 +289,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/people"
                   className={({ isActive }) =>
@@ -304,7 +304,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/maintenance"
                   className={({ isActive }) =>
@@ -319,7 +319,7 @@ const Navbar = ({ toggleClass }) => {
               </h2>
             </div>
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingThree">
+              <h2 className="accordion-header">
                 <NavLink
                   to="/calibration"
                   className={({ isActive }) =>
@@ -342,11 +342,145 @@ const Navbar = ({ toggleClass }) => {
                   aria-expanded="false"
                   aria-controls="collapseOne"
                 >
-                  Settings
+                  <h2 className="fs-6 m-0">Configure</h2>
                 </button>
               </h2>
               <div
                 id="collapseOne"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body p-0">
+                  <NavLink
+                    to="/industry"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Industry
+                  </NavLink>
+                  <NavLink
+                    to="/location"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Location
+                  </NavLink>
+                  <NavLink
+                    to="/devices"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Device
+                  </NavLink>
+                  <NavLink
+                    to="/datasettings"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Data Settings
+                  </NavLink>
+                  <NavLink
+                    to="/people"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    People
+                  </NavLink>
+                  <NavLink
+                    to="/cameraconfig"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    Camera
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingTwo">
+                <button
+                  className="accordion-button collapsed px-3"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                   <h2 className="fs-6 m-0">Reports</h2>
+                  
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body p-0">
+                  <NavLink
+                    to="/cpcblog"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    CPCB log
+                  </NavLink>
+                  <NavLink
+                    to="/hrpcblog"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "active accordion-button px-3"
+                        : "accordion-button px-3"
+                    }
+                    onClick={navHideOnSm}
+                  >
+                    HRPCB log
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <button
+                  className="accordion-button collapsed px-3"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                   <h2 className="fs-6 m-0">Settings</h2>
+                  
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
                 className="accordion-collapse collapse"
                 aria-labelledby="headingOne"
                 data-bs-parent="#accordionExample"
@@ -384,50 +518,6 @@ const Navbar = ({ toggleClass }) => {
                     onClick={navHideOnSm}
                   >
                     Data Settings
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="headingTwo">
-                <button
-                  className="accordion-button collapsed px-3"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  Reports
-                </button>
-              </h2>
-              <div
-                id="collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body p-0">
-                  <NavLink
-                    to="/cpcblog"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "active accordion-button px-3"
-                        : "accordion-button px-3"
-                    }
-                    onClick={navHideOnSm}
-                  >
-                    CPCB log
-                  </NavLink>
-                  <NavLink
-                    to="/hrpcblog"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "active accordion-button px-3"
-                        : "accordion-button px-3"
-                    }
-                    onClick={navHideOnSm}
-                  >
-                    HRPCB log
                   </NavLink>
                 </div>
               </div>

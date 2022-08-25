@@ -3,7 +3,7 @@ import React from 'react'
 const CameraConfig = () => {
   return (
     <div>
-      <h1>CameraConfig</h1>
+      <h1>Camera</h1>
     </div>
   )
 }

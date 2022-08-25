@@ -16,6 +16,8 @@ import {
   Devices,
   Consumables,
   Parameters,
+  Location,
+  Industry,
   People,
   Maintenance,
   Calibration,
@@ -105,10 +107,8 @@ function App() {
           </Route>
           <Route path="/licenses" element={<Licenses />}></Route>
           <Route path="/stations" element={<Stations />} />
-          <Route path="devices" element={<Devices />} />
           <Route path="consumables" element={<Consumables />} />
           <Route path="parameters" element={<Parameters />} />
-          <Route path="people" element={<People />} />
           <Route path="maintenance" element={<Maintenance />} />
           <Route path="calibration" element={<Calibration />} />
           {/* create new  */}
@@ -123,10 +123,15 @@ function App() {
           <Route path="requestedAssets" element={<RequestedAssets />} />
           <Route path="editProfile" element={<EditProfile />} />
           <Route path="changePassword" element={<ChangePassword />} />
-          {/* settings  */}
-          <Route path="audit" element={<Audit />} />
+          {/* configure  */}
+          <Route path="people" element={<People />} />
+          <Route path="industry" element={<Industry />} />
+          <Route path="devices" element={<Devices />} />
+          <Route path="location" element={<Location />} />
           <Route path="cameraconfig" element={<CameraConfig />} />
           <Route path="datasettings" element={<DataSettings />} />
+          {/* settings  */}
+          <Route path="audit" element={<Audit />} />
           {/* reports  */}
           <Route path="cpcblog" element={<CPCBlog />} />
           <Route path="hrpcblog" element={<HRPCBlog />} />

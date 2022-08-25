@@ -1,5 +1,6 @@
 @use "../../common/variables.scss" as v;
-
+.sidebar__wrapper{
+  background-color: v.$white;
 .sidebar__inner__wrapper {
   background-color: v.$black;
   .accordion {
@@ -58,4 +59,5 @@
       }
     }
   }
+}
 }
