@@ -41,7 +41,7 @@ const Data = () => {
       </div>
 
       <div>
-        <div className="d-flex my-2">
+        <div className="d-flex my-2 flex-wrap">
           <div>
             <IndeterminateCheckbox
               {...getToggleHideAllColumnsProps()}

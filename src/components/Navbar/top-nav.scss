@@ -33,15 +33,15 @@
     align-items: center;
     justify-content: end;
     .btn-group {
-      button,
-      button:focus,
-      button:hover,
-      button:active {
+      & > button,
+      & > button:focus,
+      & > button:hover,
+      & > button:active {
         outline: none;
         box-shadow: none;
         border: none;
       }
-      button {
+      & > button {
         color: v.$white;
         a {
           color: v.$white;
@@ -66,6 +66,16 @@
       }
       .mail__icon__btn::after {
         content: none;
+      }
+      .mail__dropdown__conatiner {
+        min-width: 400px;
+        & > .list-group {
+          overflow-x: scroll;
+          height: 200px;
+          & > a {
+            border-radius: 0px !important;
+          }
+        }
       }
     }
     & > a {
@@ -112,6 +122,14 @@
     }
     .dot__container {
       display: flex;
+    }
+  }
+  .mail__dropdown__conatiner {
+    right: -10px !important;
+    min-width: 280px !important;
+    & > .list-group {
+      overflow-x: scroll;
+      height: 200px;
     }
   }
 }

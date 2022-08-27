@@ -59,8 +59,8 @@ const Navbar = ({ toggleClass }) => {
               icon={faBars}
               className="hum__icon"
             />
-             <NavLink to="/" >
-            <img className="main__logo" src={logo} alt="" />
+            <NavLink to="/">
+              <img className="main__logo" src={logo} alt="" />
             </NavLink>
           </div>
           <div
@@ -152,29 +152,109 @@ const Navbar = ({ toggleClass }) => {
                 </li>
               </ul>
             </div>
-            <div className="btn-group mx-2">
+            <div className="btn-group">
               <button
                 type="button"
-                className="btn btn-sm dropdown-toggle mail__icon__btn"
+                className="btn btn-sm dropdown-toggle mail__icon__btn me-2"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <a href="#" className="pt-1">
+                <a href="#">
                   <FontAwesomeIcon icon={faEnvelope} className="fs-5" />
                 </a>
               </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow">
-                <p className="m-2">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Recusandae praesentium cupiditate repellat inventore corrupti
-                  soluta.
-                </p>
+              <ul className="dropdown-menu dropdown-menu-end shadow py-2 mail__dropdown__conatiner">
+                <div className="px-3 d-flex align-items-center justify-content-between mb-2">
+                  <h6 className="m-0">Mails ( 25 )</h6>
+                  <button
+                    type="button"
+                    className="btn  btn-sm text-primary"
+                  >
+                    View All
+                  </button>
+                </div>
+                <div
+                  className="list-group"
+                >
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                  <a
+                    className="list-group-item list-group-item-action bg-light"
+                    aria-current="true"
+                  >
+                    <div className="d-flex w-100 justify-content-between flex-column flex-sm-row">
+                      <p className="m-0">Precise Seamless Apparels Pvt Ltd</p>
+                      <p className="m-0">3 days ago</p>
+                    </div>
+                    <small className="m-0">
+                      Exce. Parametres: ( COD, BOD )
+                    </small>
+                  </a>
+                </div>
               </ul>
             </div>
             <a href="#">
               <FontAwesomeIcon icon={faGear} className="fs-5" />
             </a>
-            <div className="ms-4 cross__icon__box pt-1">
+            <div className="ms-3 cross__icon__box">
               <FontAwesomeIcon
                 icon={faCircleXmark}
                 onClick={() => {
@@ -430,8 +510,7 @@ const Navbar = ({ toggleClass }) => {
                   aria-expanded="false"
                   aria-controls="collapseTwo"
                 >
-                   <h2 className="fs-6 m-0">Reports</h2>
-                  
+                  <h2 className="fs-6 m-0">Reports</h2>
                 </button>
               </h2>
               <div
@@ -475,8 +554,7 @@ const Navbar = ({ toggleClass }) => {
                   aria-expanded="false"
                   aria-controls="collapseThree"
                 >
-                   <h2 className="fs-6 m-0">Settings</h2>
-                  
+                  <h2 className="fs-6 m-0">Settings</h2>
                 </button>
               </h2>
               <div

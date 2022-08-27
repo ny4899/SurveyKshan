@@ -20,4 +20,9 @@
     scrollbar-face-color: v.$darkGray;
     scrollbar-track-color: v.$gray;
   }
+  @media only screen and (max-width: 576px) {
+    &::-webkit-scrollbar {
+      width: 0px !important;
+    }
+  }
 }
