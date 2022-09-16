@@ -17,7 +17,7 @@ import {
 
 import logo from "../../images/logo.png";
 
-const Navbar = ({ toggleClass }) => {
+const Navbar = ({ toggleClass, setUser }) => {
   const [rightNavDisplay, setRightNavDisplay] = useState(false);
   const refnavcontainer = useRef(null);
 
@@ -44,9 +44,9 @@ const Navbar = ({ toggleClass }) => {
     }
   };
 
-  const logout = async (e) => {
-    e.preventDefault();
-    await signOut(auth);
+  const logout = () => {
+    setUser("");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -159,23 +159,18 @@ const Navbar = ({ toggleClass }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <a href="#">
+                <a>
                   <FontAwesomeIcon icon={faEnvelope} className="fs-5" />
                 </a>
               </button>
               <ul className="dropdown-menu dropdown-menu-end shadow py-2 mail__dropdown__conatiner">
                 <div className="px-3 d-flex align-items-center justify-content-between mb-2">
                   <h6 className="m-0">Mails ( 25 )</h6>
-                  <button
-                    type="button"
-                    className="btn  btn-sm text-primary"
-                  >
+                  <button type="button" className="btn  btn-sm text-primary">
                     View All
                   </button>
                 </div>
-                <div
-                  className="list-group"
-                >
+                <div className="list-group">
                   <a
                     className="list-group-item list-group-item-action bg-light"
                     aria-current="true"
@@ -251,7 +246,7 @@ const Navbar = ({ toggleClass }) => {
                 </div>
               </ul>
             </div>
-            <a href="#">
+            <a>
               <FontAwesomeIcon icon={faGear} className="fs-5" />
             </a>
             <div className="ms-3 cross__icon__box">
@@ -365,21 +360,6 @@ const Navbar = ({ toggleClass }) => {
                   onClick={navHideOnSm}
                 >
                   Parameters
-                </NavLink>
-              </h2>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <NavLink
-                  to="/people"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "active accordion-button px-3"
-                      : "accordion-button px-3"
-                  }
-                  onClick={navHideOnSm}
-                >
-                  People
                 </NavLink>
               </h2>
             </div>

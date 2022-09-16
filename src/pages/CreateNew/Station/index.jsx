@@ -1,6 +1,20 @@
 import React from "react";
+import { useRef } from "react";
 
 const CreateNewStation = () => {
+  const refName = useRef(null);
+  const refLocatiion = useRef(null);
+  const refDevice = useRef(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dataObj = {
+      name: refName.current.value,
+      location: refLocatiion.current.value,
+      Device: refDevice.current.value,
+    };
+  };
+
   return (
     <>
       <div className="container-fluid px-3 py-4">
@@ -14,12 +28,39 @@ const CreateNewStation = () => {
                   overflowX: "scroll",
                 }}
               >
-                <form>
+                <form onSubmit={handleSubmit}>
                   <fieldset className="">
                     <legend style={{ backgroundColor: "lavender" }}>
                       Create New Station
                     </legend>
                     <div className="row g-3">
+                      {/* ============================================= */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <input
+                          ref={refName}
+                          required
+                          type="text"
+                          className="form-control"
+                          placeholder="Name ======="
+                        ></input>
+                      </div>
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <input
+                          ref={refLocatiion}
+                          type="text"
+                          className="form-control"
+                          placeholder="Location ======="
+                        ></input>
+                      </div>
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <input
+                          ref={refDevice}
+                          type="text"
+                          className="form-control"
+                          placeholder="Devices ======="
+                        ></input>
+                      </div>
+                      {/* ============================================= */}
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
@@ -27,20 +68,19 @@ const CreateNewStation = () => {
                           className="form-select"
                         >
                           <option disabled value="DEFAULT_Industry">
-                            Select Industry
+                            about
                           </option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <option value="team leader">team leader</option>
+                          <option value="owner">owner</option>
+                          <option value="office boy">office boy</option>
                         </select>
                       </div>
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <input
-                          required
                           type="text"
                           className="form-control"
-                          placeholder="Station Tag *"
+                          placeholder="Price"
                         ></input>
                       </div>
                       {/* col-10  */}
@@ -48,7 +88,6 @@ const CreateNewStation = () => {
                         <select
                           defaultValue={"DEFAULT_Model"}
                           className="form-select"
-                          required
                         >
                           <option disabled value="DEFAULT_Model">
                             Select a Model *
@@ -74,7 +113,6 @@ const CreateNewStation = () => {
                         <select
                           defaultValue={"DEFAULT_Status"}
                           className="form-select"
-                          required
                         >
                           <option disabled value="DEFAULT_Status">
                             Select a Status *
@@ -101,7 +139,7 @@ const CreateNewStation = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Serial"
+                          placeholder="Name"
                         ></input>
                       </div>
                       {/* col-10  */}
@@ -127,7 +165,6 @@ const CreateNewStation = () => {
                         <select
                           defaultValue={"DEFAULT_supplier"}
                           className="form-select"
-                          required
                         >
                           <option disabled value="DEFAULT_supplier">
                             Select a Supplier

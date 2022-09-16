@@ -22,8 +22,6 @@ export { default as Audit } from "./Settings/Audit";
 export { default as CPCBlog } from "./Reports/CPCBlog"
 export { default as HRPCBlog } from "./Reports/HRPCBlog"
 
-
-
 // Admin tabs 
 export { default as AssignedStations } from "./Admin/AssignedStations"
 export { default as ChangePassword } from "./Admin/ChangePassword"

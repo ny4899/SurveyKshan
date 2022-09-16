@@ -12,8 +12,25 @@ import { faDownload, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Stations = () => {
+  // const [apiData, setApiData] = useState({});
+
+  useEffect(() => {
+    try {
+      fetch("https://natoursny.herokuapp.com/api/v1/tours/")
+        .then((res) => {
+          console.log(res);
+          return res.json();
+        })
+        .then((json) => {
+          console.log(JSON.parse(JSON.stringify(json.data.tours)));
+          //  return setApiData(JSON.stringify(json.data.tours))
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   let navigate = useNavigate();
-  
+
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => MOCK_DATA, []);
   const [filteredData, setFilteredData] = useState(null);
@@ -34,7 +51,7 @@ const Stations = () => {
       columns,
       data,
       initialState: {
-        hiddenColumns: ["Status", "id"],
+        hiddenColumns: ["id"],
       },
     },
     useGlobalFilter,
@@ -171,7 +188,7 @@ const Stations = () => {
               <div className="col-12">
                 <div>
                   <div className="table__container">
-                    <table {...getTableProps()} >
+                    <table {...getTableProps()}>
                       <thead>
                         {headerGroups.map((headerGroup) => (
                           <tr {...headerGroup.getHeaderGroupProps()}>

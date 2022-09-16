@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
+import axios from "axios";
 // -----
 
 import { Routes, Route } from "react-router-dom";
-import { auth } from "./firebaseConfig";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+// import { auth } from "./firebaseConfig";
+// import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 // -----
 import { LoginForm, Loading, Navbar } from "./components";
@@ -37,7 +38,7 @@ import {
   EditProfile,
   ChangePassword,
   Nopage,
-} from "./pages"
+} from "./pages";
 import Graph from "./components/Dashboard/ContentContainer/Graph";
 import Map from "./components/Dashboard/ContentContainer/Map";
 import Data from "./components/Dashboard/ContentContainer/Data";
@@ -48,23 +49,34 @@ function App() {
   const [user, setUser] = useState("");
   const [error, setError] = useState("");
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-    setLoading(false);
-  });
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   setUser(currentUser);
+  //   setLoading(false);
+  // });
 
   const handleSubmit = async function (e) {
     e.preventDefault();
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        refUserName.current.value,
-        refPassword.current.value
+    const data = await axios(
+      `http://localhost:4000/api/v1/users?username=${refUserName.current.value}&password=${refPassword.current.value}`
+    );
+    if (data.data.results === 1) {
+      setUser(data.data.data.users[0]);
+      setLoading(false);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.data.data.users[0].username)
       );
-    } catch (error) {
-      setError(error.code);
     }
   };
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("user"))) {
+      setUser(true);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const refmaincontainer = useRef(null);
   const toggleClass = () => {
@@ -78,7 +90,6 @@ function App() {
       element.className = withConatinerFull;
     }
   };
-
   if (loading) {
     return <Loading />;
   }
@@ -97,7 +108,7 @@ function App() {
 
   return (
     <div className="site__warpper">
-      <Navbar toggleClass={toggleClass} />
+      <Navbar toggleClass={toggleClass} setUser={setUser} />
       <div ref={refmaincontainer} className="main__wrapper">
         <Routes>
           <Route element={<Dashboard />}>
