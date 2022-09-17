@@ -33,7 +33,7 @@ const CreateNewUser = () => {
       };
       console.log(dataObj);
       const res = await axios.post(
-        "http://localhost:4000/api/v1/users",
+        "https://natoursny.herokuapp.com/api/v1/users",
         dataObj
       );
       console.log(res);
