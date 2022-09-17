@@ -1,7 +1,4 @@
 import React, { useRef, useState } from "react";
-import { auth } from "../../firebaseConfig";
-import { signOut } from "firebase/auth";
-
 import { NavLink, Outlet } from "react-router-dom";
 import "./top-nav.scss";
 import "./side-nav.scss";

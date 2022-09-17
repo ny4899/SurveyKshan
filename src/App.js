@@ -4,9 +4,6 @@ import axios from "axios";
 // -----
 
 import { Routes, Route } from "react-router-dom";
-// import { auth } from "./firebaseConfig";
-// import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-
 // -----
 import { LoginForm, Loading, Navbar } from "./components";
 
@@ -49,15 +46,10 @@ function App() {
   const [user, setUser] = useState("");
   const [error, setError] = useState("");
 
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   setUser(currentUser);
-  //   setLoading(false);
-  // });
-
   const handleSubmit = async function (e) {
     e.preventDefault();
     const data = await axios(
-      `http://localhost:4000/api/v1/users?username=${refUserName.current.value}&password=${refPassword.current.value}`
+      `https://natoursny.herokuapp.com/api/v1/users?username=${refUserName.current.value}&password=${refPassword.current.value}`
     );
     if (data.data.results === 1) {
       setUser(data.data.data.users[0]);
