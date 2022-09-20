@@ -1,10 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
-
-import { CSVLink } from "react-csv";
-import MOCK_DATA from "../../../common/Data/MOCK_DATA.json";
-import { COLUMNS } from "../../../common/Data/column";
+import { COLUMNS } from "./column";
 import GlobalFilter from "../../../common/GlobalFilter";
 import { IndeterminateCheckbox } from "../../../common/IndeterminateCheckbox";
 

@@ -123,6 +123,11 @@ const Navbar = ({ toggleClass, setUser }) => {
                   </NavLink>
                 </li>
                 <li>
+                  <NavLink to="/createNewIndustry" className="dropdown-item">
+                    Industry
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink to="/createNewLicense" className="dropdown-item">
                     License
                   </NavLink>

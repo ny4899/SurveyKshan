@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import axios from "axios";
 // -----
-
 import { Routes, Route } from "react-router-dom";
 // -----
 import { LoginForm, Loading, Navbar } from "./components";
@@ -30,6 +29,7 @@ import {
   CreateNewDevice,
   CreateNewParameter,
   CreateNewUser,
+  CreateNewIndustry,
   AssignedStations,
   RequestedAssets,
   EditProfile,
@@ -39,25 +39,38 @@ import {
 import Graph from "./components/Dashboard/ContentContainer/Graph";
 import Map from "./components/Dashboard/ContentContainer/Map";
 import Data from "./components/Dashboard/ContentContainer/Data";
+
 function App() {
   const refUserName = useRef();
   const refPassword = useRef();
   const [loading, setLoading] = useState(true);
+  const [fetchingData, setFetchingData] = useState("");
   const [user, setUser] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async function (e) {
+    setFetchingData("Fetching data...");
     e.preventDefault();
-    const data = await axios(
-      `https://natoursny.herokuapp.com/api/v1/users?username=${refUserName.current.value}&password=${refPassword.current.value}`
-    );
-    if (data.data.results === 1) {
-      setUser(data.data.data.users[0]);
-      setLoading(false);
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.data.data.users[0].username)
+    try {
+      const data = await axios(
+        `https://natoursny.herokuapp.com/api/v1/users?username=${refUserName.current.value}&password=${refPassword.current.value}`
       );
+      if (data.data.results === 1) {
+        setUser(data.data.data.users[0]);
+        setFetchingData("");
+        setLoading(false);
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.data.data.users[0].username)
+        );
+      }
+      if (!data.data.results) {
+        setLoading(false);
+        throw new Error("Username or password not matched!");
+      }
+    } catch (error) {
+      setFetchingData("");
+      setError(error.message);
     }
   };
 
@@ -82,6 +95,7 @@ function App() {
       element.className = withConatinerFull;
     }
   };
+
   if (loading) {
     return <Loading />;
   }
@@ -94,6 +108,7 @@ function App() {
         refPassword={refPassword}
         error={error}
         setError={setError}
+        fetchingData={fetchingData}
       />
     );
   }
@@ -121,6 +136,7 @@ function App() {
           <Route path="createNewConsumable" element={<CreateNewConsumable />} />
           <Route path="createNewParameter" element={<CreateNewParameter />} />
           <Route path="createNewUser" element={<CreateNewUser />} />
+          <Route path="createNewIndustry" element={<CreateNewIndustry />} />
           {/* Admin  */}
           <Route path="assignedStations" element={<AssignedStations />} />
           <Route path="requestedAssets" element={<RequestedAssets />} />

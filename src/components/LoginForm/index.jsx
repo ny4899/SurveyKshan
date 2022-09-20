@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./login-form.scss";
 import logo from "../../images/logo.png";
 
-const LoginForm = ({ handleSubmit, refPassword, refUserName, error ,setError }) => {
-
+const LoginForm = ({
+  handleSubmit,
+  refPassword,
+  refUserName,
+  error,
+  setError,
+  fetchingData,
+}) => {
   useEffect(() => {
     const timeId = setTimeout(() => {
       if (error) {
@@ -22,6 +28,16 @@ const LoginForm = ({ handleSubmit, refPassword, refUserName, error ,setError }) 
           <div className="row g-3 m-0 px-2 py-4 px-sm-3">
             <div className="col-12 d-flex justify-content-center">
               <img src={logo} width={"200px"} alt="" />
+            </div>
+            <div className="col-12">
+              {fetchingData && (
+                <div
+                  className="alert alert-primary alert-dismissible fade show"
+                  role="alert"
+                >
+                  {fetchingData}
+                </div>
+              )}
             </div>
             <div className="col-12">
               {error && (
