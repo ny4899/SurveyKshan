@@ -5,8 +5,13 @@ import { COLUMNS } from "./column";
 import GlobalFilter from "../../../common/GlobalFilter";
 import { IndeterminateCheckbox } from "../../../common/IndeterminateCheckbox";
 
-import { faDownload, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faDownload,
+  faRotate,
+  faTrash,
+  faPen,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const Industry = () => {
@@ -18,7 +23,6 @@ const Industry = () => {
       const result = await axios(
         "https://natoursny.herokuapp.com/api/v1/industries"
       );
-      console.log(result);
       setApiData(result.data.data.industries);
     })();
   }, []);
@@ -61,14 +65,32 @@ const Industry = () => {
               <p className="fs-5 m-0">People</p>
             </div>
             <div className="d-flex">
-              <a
+              <span
                 onClick={() =>
                   navigate("/CreateNewIndustry", { replace: true })
                 }
                 className="btn btn-sm btn-primary"
               >
                 Create New
-              </a>
+              </span>
+              <span
+                onClick={() =>
+                  navigate("/CreateNewIndustry", { replace: true })
+                }
+                className="btn btn-sm btn-secondary mx-2"
+                title="Edit Industry"
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </span>
+              <span
+                onClick={() =>
+                  navigate("/CreateNewIndustry", { replace: true })
+                }
+                className="btn btn-sm btn-danger"
+                title="Delete Industry"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
             </div>
           </div>
         </div>

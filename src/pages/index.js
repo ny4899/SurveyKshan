@@ -36,3 +36,4 @@ export { default as CreateNewParameter } from "./CreateNew/Parameter";
 export { default as CreateNewStation } from "./CreateNew/Station";
 export { default as CreateNewUser } from "./CreateNew/User";
 export { default as CreateNewIndustry } from "./CreateNew/Industry";
+export { default as CreateNewLocation } from "./CreateNew/Location";

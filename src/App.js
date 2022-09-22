@@ -30,6 +30,7 @@ import {
   CreateNewParameter,
   CreateNewUser,
   CreateNewIndustry,
+  CreateNewLocation,
   AssignedStations,
   RequestedAssets,
   EditProfile,
@@ -137,6 +138,7 @@ function App() {
           <Route path="createNewParameter" element={<CreateNewParameter />} />
           <Route path="createNewUser" element={<CreateNewUser />} />
           <Route path="createNewIndustry" element={<CreateNewIndustry />} />
+          <Route path="createNewLocation" element={<CreateNewLocation />} />
           {/* Admin  */}
           <Route path="assignedStations" element={<AssignedStations />} />
           <Route path="requestedAssets" element={<RequestedAssets />} />

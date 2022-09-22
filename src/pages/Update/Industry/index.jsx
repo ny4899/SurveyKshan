@@ -1,20 +1,17 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 
-const CreateNewUser = () => {
+const UpdateIndustry = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
   const refName = useRef(null);
-  const refLastname = useRef(null);
-  const refUsername = useRef(null);
-  const refPassword = useRef(null);
-  const refEmail = useRef(null);
+  const refCategory = useRef(null);
   const refIndustry = useRef(null);
-  const refPhone = useRef(null);
-  const refCity = useRef(null);
-  const refAddress = useRef(null);
-  const refState = useRef(null);
-  const refExpirein = useRef(null);
+  const refENM = useRef(null);
+  const refShowToCPCB = useRef(null);
+  const refIndustryAs = useRef(null);
+  const refPartner = useRef(null);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -32,28 +29,24 @@ const CreateNewUser = () => {
     try {
       e.preventDefault();
       const dataObj = {
-        name: refName.current.value,
-        last_name: refLastname.current.value,
-        username: refUsername.current.value,
-        password: refPassword.current.value,
-        email: refEmail.current.value,
-        industry: refIndustry.current.value,
-        phone: refPhone.current.value,
-        city: refCity.current.value,
-        address: refAddress.current.value,
-        state: refState.current.value,
-        expire_in: refExpirein.current.value,
+        industry_name: refName.current.value,
+        industry_category: refCategory.current.value,
+        industry_type: refIndustry.current.value,
+        exceedance_notification_mail: refENM.current.value,
+        show_to_CPCB: refShowToCPCB.current.value,
+        industry_as: refIndustryAs.current.value,
+        industry_partner: refPartner.current.value,
       };
       const res = await axios.post(
-        "https://natoursny.herokuapp.com/api/v1/users",
+        "https://natoursny.herokuapp.com/api/v1/industries",
         dataObj
       );
       if (res.status === 201) {
-        setMessage("User created successfully!");
+        setMessage("Industry created successfully");
       }
     } catch (error) {
       if (error.response.data.message.includes("E11000")) {
-        setError(`User name already exist!`);
+        setError(`Industry name already exist!`);
       } else {
         setError(`Something went wrong! ${error.message}`);
       }
@@ -73,9 +66,9 @@ const CreateNewUser = () => {
                 }}
               >
                 <form onSubmit={handleSubmit}>
-                  <fieldset>
+                  <fieldset className="">
                     <legend style={{ backgroundColor: "lavender" }}>
-                      Create New User
+                      Create New Industry
                     </legend>
                     <div className="row g-3">
                       {/* ============================================= */}
@@ -88,106 +81,105 @@ const CreateNewUser = () => {
                           placeholder="Name *"
                         ></input>
                       </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refLastname}
-                          type="text"
-                          className="form-control"
-                          placeholder="Lastname"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refUsername}
-                          required
-                          type="text"
-                          className="form-control"
-                          placeholder="Username *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refPassword}
-                          required
-                          type="text"
-                          className="form-control"
-                          placeholder="Password *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refExpirein}
-                          required
-                          type="number"
-                          className="form-control"
-                          placeholder="Expire in *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refEmail}
-                          type="email"
-                          className="form-control"
-                          placeholder="Email"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refIndustry}
-                          type="text"
-                          className="form-control"
-                          placeholder="Industry"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refPhone}
-                          type="text"
-                          className="form-control"
-                          placeholder="Phone no."
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refCity}
-                          type="text"
-                          className="form-control"
-                          placeholder="City"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refAddress}
-                          type="text"
-                          className="form-control"
-                          placeholder="Address"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refState}
-                          type="text"
-                          className="form-control"
-                          placeholder="State"
-                        ></input>
-                      </div>
-                      {/* ============================================= */}
-                      {/* col-10  */}
-                      {/* <div className="col-9 col-sm-10 col-xl-11">
-                        <select
-                          defaultValue={"DEFAULT_Industry"}
-                          className="form-select"
-                        >
-                          <option disabled value="DEFAULT_Industry">
-                            about
-                          </option>
-                          <option value="team leader">team leader</option>
-                          <option value="owner">owner</option>
-                          <option value="office boy">office boy</option>
-                        </select> 
-                      </div> */}
 
                       {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_category"}
+                          className="form-select"
+                          ref={refCategory}
+                          required
+                        >
+                          <option disabled value="DEFAULT_category">
+                            Select a Category *
+                          </option>
+                          <option value="cement">cement</option>
+                          <option value="chemical">chemical</option>
+                          <option value="cppper">coppper</option>
+                          <option value="sugar">sugar</option>
+                        </select>
+                      </div>
+
+                      {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_industry"}
+                          className="form-select"
+                          ref={refIndustry}
+                          required
+                        >
+                          <option disabled value="DEFAULT_industry">
+                            Select a industry *
+                          </option>
+                          <option value="CEPT">CEPT</option>
+                          <option value="dairy">Dairy</option>
+                          <option value="manufacturer">Manufacturer</option>
+                          <option value="OEM">OEM</option>
+                        </select>
+                      </div>
+
+                      {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_ENM"}
+                          className="form-select"
+                          ref={refENM}
+                        >
+                          <option disabled value="DEFAULT_ENM">
+                            Exceedance Notification mail
+                          </option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>no</option>
+                        </select>
+                      </div>
+
+                      {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_Show_CPCB"}
+                          className="form-select"
+                          ref={refShowToCPCB}
+                        >
+                          <option disabled value="DEFAULT_Show_CPCB">
+                            Show Industry to CPCB?
+                          </option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>no</option>
+                        </select>
+                      </div>
+
+                      {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_AS"}
+                          className="form-select"
+                          ref={refIndustryAs}
+                        >
+                          <option disabled value="DEFAULT_AS">
+                            Select Option
+                          </option>
+                          <option value="client">client</option>
+                          <option value="partner">partner</option>
+                        </select>
+                      </div>
+
+                      {/* col-10  */}
+                      <div className="col-9 col-sm-10 col-xl-11">
+                        <select
+                          defaultValue={"DEFAULT_partner"}
+                          className="form-select"
+                          ref={refPartner}
+                        >
+                          <option disabled value="DEFAULT_partner">
+                            Select Partner
+                          </option>
+                          <option value="envirozone">Envirozone</option>
+                          <option value="ingeo">Ingeo</option>
+                          <option value="hitech enviro solutions">
+                            Hitech Enviro Solutions
+                          </option>
+                        </select>
+                      </div>
 
                       {message && (
                         <div className="col-9 col-sm-10 col-xl-11">
@@ -494,4 +486,4 @@ const CreateNewUser = () => {
   );
 };
 
-export default CreateNewUser;
+export default UpdateIndustry;

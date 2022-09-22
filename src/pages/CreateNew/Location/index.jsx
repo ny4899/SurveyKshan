@@ -1,20 +1,23 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 
-const CreateNewUser = () => {
+const CreateNewLocation = () => {
+  const [industryNames, setIndustryNames] = useState("");
+  const [selectedIndustryId, setSelectedIndustryId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const refName = useRef(null);
-  const refLastname = useRef(null);
-  const refUsername = useRef(null);
-  const refPassword = useRef(null);
-  const refEmail = useRef(null);
-  const refIndustry = useRef(null);
-  const refPhone = useRef(null);
-  const refCity = useRef(null);
+
+  const refSelectedIndustry = useRef("");
+
+  const refLocationName = useRef(null);
   const refAddress = useRef(null);
+  const refCity = useRef(null);
   const refState = useRef(null);
-  const refExpirein = useRef(null);
+  const refPincode = useRef(null);
+  const refLatitude = useRef(null);
+  const refLongitude = useRef(null);
+  const refIndustrycode = useRef(null);
+  const refGangaBasin = useRef(null);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -28,37 +31,51 @@ const CreateNewUser = () => {
     };
   }, [message, error]);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
     try {
-      e.preventDefault();
+      async function fetchData() {
+        const res = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industry_names"
+        );
+        setIndustryNames(res.data.data.industry_names);
+      }
+      fetchData();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
+
+  const handleSelectedIndustry = (e) => {
+    e.preventDefault();
+    setSelectedIndustryId(refSelectedIndustry.current.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
       const dataObj = {
-        name: refName.current.value,
-        last_name: refLastname.current.value,
-        username: refUsername.current.value,
-        password: refPassword.current.value,
-        email: refEmail.current.value,
-        industry: refIndustry.current.value,
-        phone: refPhone.current.value,
-        city: refCity.current.value,
+        location_name: refLocationName.current.value,
         address: refAddress.current.value,
+        city: refCity.current.value,
         state: refState.current.value,
-        expire_in: refExpirein.current.value,
+        pincode: refPincode.current.value,
+        latitude: refLatitude.current.value,
+        longitude: refLongitude.current.value,
+        industry_code: refIndustrycode.current.value,
+        ganga_basin: refGangaBasin.current.value,
       };
-      const res = await axios.post(
-        "https://natoursny.herokuapp.com/api/v1/users",
+      const res = await axios.patch(
+        `https://natoursny.herokuapp.com/api/v1/industries/${selectedIndustryId}`,
         dataObj
       );
-      if (res.status === 201) {
-        setMessage("User created successfully!");
+      if (res.status === 204) {
+        setMessage("Location added successfully!");
       }
     } catch (error) {
-      if (error.response.data.message.includes("E11000")) {
-        setError(`User name already exist!`);
-      } else {
-        setError(`Something went wrong! ${error.message}`);
-      }
+      setError(`Something went wrong! ${error.message}`);
     }
   };
+
   return (
     <>
       <div className="container-fluid px-3 py-4">
@@ -72,108 +89,133 @@ const CreateNewUser = () => {
                   overflowX: "scroll",
                 }}
               >
-                <form onSubmit={handleSubmit}>
+                <form>
                   <fieldset>
                     <legend style={{ backgroundColor: "lavender" }}>
-                      Create New User
+                      Select industry
                     </legend>
                     <div className="row g-3">
-                      {/* ============================================= */}
+                      {/* ================*/}
                       <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refName}
-                          required
-                          type="text"
-                          className="form-control"
-                          placeholder="Name *"
-                        ></input>
+                        <select
+                          defaultValue={"DEFAULT_Industry"}
+                          className="form-select mb-3"
+                          ref={refSelectedIndustry}
+                          onChange={handleSelectedIndustry}
+                        >
+                          <option disabled value="DEFAULT_Industry">
+                            Select industry
+                          </option>
+                          {industryNames ? (
+                            industryNames.map((name) => {
+                              return (
+                                <option key={name._id} value={name._id}>
+                                  {name.industry_name}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option value="loading">Loading...</option>
+                          )}
+                        </select>
                       </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refLastname}
-                          type="text"
-                          className="form-control"
-                          placeholder="Lastname"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refUsername}
-                          required
-                          type="text"
-                          className="form-control"
-                          placeholder="Username *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refPassword}
-                          required
-                          type="text"
-                          className="form-control"
-                          placeholder="Password *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refExpirein}
-                          required
-                          type="number"
-                          className="form-control"
-                          placeholder="Expire in *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refEmail}
-                          type="email"
-                          className="form-control"
-                          placeholder="Email"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refIndustry}
-                          type="text"
-                          className="form-control"
-                          placeholder="Industry"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refPhone}
-                          type="text"
-                          className="form-control"
-                          placeholder="Phone no."
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refCity}
-                          type="text"
-                          className="form-control"
-                          placeholder="City"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refAddress}
-                          type="text"
-                          className="form-control"
-                          placeholder="Address"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
-                          ref={refState}
-                          type="text"
-                          className="form-control"
-                          placeholder="State"
-                        ></input>
-                      </div>
-                      {/* ============================================= */}
-                      {/* col-10  */}
-                      {/* <div className="col-9 col-sm-10 col-xl-11">
+                      {/* ================*/}
+                    </div>
+                  </fieldset>
+                </form>
+                {selectedIndustryId ? (
+                  <form onSubmit={handleSubmit} className="mt-4">
+                    <fieldset>
+                      <legend style={{ backgroundColor: "lavender" }}>
+                        Add Location
+                      </legend>
+                      <div className="row g-3">
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refLocationName}
+                            required
+                            type="text"
+                            className="form-control"
+                            placeholder="Location name *"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refAddress}
+                            type="text"
+                            className="form-control"
+                            placeholder="Address"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refCity}
+                            type="text"
+                            className="form-control"
+                            placeholder="City"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refState}
+                            type="text"
+                            className="form-control"
+                            placeholder="State"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refPincode}
+                            type="number"
+                            className="form-control"
+                            placeholder="Pincode"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refLatitude}
+                            type="number"
+                            className="form-control"
+                            placeholder="Latitude"
+                            step=".01"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refLongitude}
+                            type="number"
+                            className="form-control"
+                            placeholder="Longitude"
+                            step=".01"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refIndustrycode}
+                            type="text"
+                            className="form-control"
+                            placeholder="Industry code"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refGangaBasin}
+                            type="text"
+                            className="form-control"
+                            placeholder="Ganga Basin"
+                          ></input>
+                        </div>
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <input
+                            ref={refState}
+                            type="text"
+                            className="form-control"
+                            placeholder="State"
+                          ></input>
+                        </div>
+                        {/* ============================================= */}
+                        {/* col-10  */}
+                        {/* <div className="col-9 col-sm-10 col-xl-11">
                         <select
                           defaultValue={"DEFAULT_Industry"}
                           className="form-select"
@@ -187,38 +229,41 @@ const CreateNewUser = () => {
                         </select> 
                       </div> */}
 
-                      {/* col-10  */}
+                        {/* col-10  */}
 
-                      {message && (
-                        <div className="col-9 col-sm-10 col-xl-11">
-                          <div
-                            className="alert alert-success px-2"
-                            role="alert"
-                          >
-                            {message}
+                        {message && (
+                          <div className="col-9 col-sm-10 col-xl-11">
+                            <div
+                              className="alert alert-success px-2"
+                              role="alert"
+                            >
+                              {message}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      {error && (
-                        <div className="col-9 col-sm-10 col-xl-11">
-                          <div className="alert alert-danger" role="alert">
-                            {error}
+                        )}
+                        {error && (
+                          <div className="col-9 col-sm-10 col-xl-11">
+                            <div className="alert alert-danger" role="alert">
+                              {error}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <div className="d-flex justify-content-end py-2">
-                          <button className="btn btn-secondary me-3">
-                            Cancel
-                          </button>
-                          <button type="submit" className="btn btn-success">
-                            Save
-                          </button>
+                        )}
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <div className="d-flex justify-content-end py-2">
+                            <button className="btn btn-secondary me-3">
+                              Cancel
+                            </button>
+                            <button type="submit" className="btn btn-success">
+                              Save
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </fieldset>
-                </form>
+                    </fieldset>
+                  </form>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
@@ -494,4 +539,4 @@ const CreateNewUser = () => {
   );
 };
 
-export default CreateNewUser;
+export default CreateNewLocation;
