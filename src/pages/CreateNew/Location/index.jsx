@@ -32,17 +32,17 @@ const CreateNewLocation = () => {
   }, [message, error]);
 
   useEffect(() => {
-    try {
-      async function fetchData() {
+    async function fetchData() {
+      try {
         const res = await axios(
           "https://natoursny.herokuapp.com/api/v1/industry_names"
         );
         setIndustryNames(res.data.data.industry_names);
+      } catch (error) {
+        console.log(error.message);
       }
-      fetchData();
-    } catch (error) {
-      console.log(error.message);
     }
+    fetchData();
   }, []);
 
   const handleSelectedIndustry = (e) => {
@@ -115,7 +115,9 @@ const CreateNewLocation = () => {
                               );
                             })
                           ) : (
-                            <option value="loading">Loading...</option>
+                            <option disabled value="loading">
+                              Loading...
+                            </option>
                           )}
                         </select>
                       </div>

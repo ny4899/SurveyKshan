@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { COLUMNS } from "./column";
 import GlobalFilter from "../../../common/GlobalFilter";
@@ -73,15 +73,16 @@ const Industry = () => {
               >
                 Create New
               </span>
-              <span
+              <Link
                 onClick={() =>
                   navigate("/CreateNewIndustry", { replace: true })
                 }
                 className="btn btn-sm btn-secondary mx-2"
                 title="Edit Industry"
+                to="/updateIndustry"
               >
                 <FontAwesomeIcon icon={faPen} />
-              </span>
+              </Link>
               <span
                 onClick={() =>
                   navigate("/CreateNewIndustry", { replace: true })

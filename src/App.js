@@ -31,6 +31,7 @@ import {
   CreateNewUser,
   CreateNewIndustry,
   CreateNewLocation,
+  UpdateIndustry,
   AssignedStations,
   RequestedAssets,
   EditProfile,
@@ -139,6 +140,8 @@ function App() {
           <Route path="createNewUser" element={<CreateNewUser />} />
           <Route path="createNewIndustry" element={<CreateNewIndustry />} />
           <Route path="createNewLocation" element={<CreateNewLocation />} />
+          {/* Update  */}
+          <Route path="updateIndustry" element={<UpdateIndustry />} />
           {/* Admin  */}
           <Route path="assignedStations" element={<AssignedStations />} />
           <Route path="requestedAssets" element={<RequestedAssets />} />

@@ -1,9 +1,16 @@
-import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
 
 const CreateNewIndustry = () => {
+  const [categoryList, setCategoryList] = useState("");
+  const [typeList, setTypeList] = useState("");
   const [message, setMessage] = useState("");
+  const [addCategoryMessage, setAddCategoryMessage] = useState("");
+  const [addTypeMessage, setAddTypeMessage] = useState("");
+
   const [error, setError] = useState("");
+  const [addCategoryError, setAddCategoryError] = useState("");
+  const [addTypeError, setAddTypeError] = useState("");
 
   const refName = useRef(null);
   const refCategory = useRef(null);
@@ -13,21 +20,68 @@ const CreateNewIndustry = () => {
   const refIndustryAs = useRef(null);
   const refPartner = useRef(null);
 
+  const refAddCategory = useRef(null);
+  const refAddType = useRef(null);
+
   useEffect(() => {
     const timeId = setTimeout(() => {
       if (message || error) {
         setMessage("");
         setError("");
       }
+      if (addCategoryMessage || addCategoryError) {
+        setAddCategoryMessage("");
+        setAddCategoryError("");
+      }
+      if (addTypeMessage || addTypeError) {
+        setAddTypeMessage("");
+        setAddTypeError("");
+      }
     }, 3000);
     return () => {
       clearTimeout(timeId);
     };
-  }, [message, error]);
+  }, [
+    message,
+    addTypeMessage,
+    addCategoryMessage,
+    error,
+    addTypeError,
+    addCategoryError,
+  ]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industry_categories"
+        );
+        setCategoryList(res.data.data.industry_categories);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, [addCategoryMessage]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industry_types"
+        );
+        setTypeList(res.data.data.industry_types);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, [addTypeMessage]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("processing!");
     try {
-      e.preventDefault();
       const dataObj = {
         industry_name: refName.current.value,
         industry_category: refCategory.current.value,
@@ -37,6 +91,7 @@ const CreateNewIndustry = () => {
         industry_as: refIndustryAs.current.value,
         industry_partner: refPartner.current.value,
       };
+      console.log(dataObj);
       const res = await axios.post(
         "https://natoursny.herokuapp.com/api/v1/industries",
         dataObj
@@ -45,13 +100,68 @@ const CreateNewIndustry = () => {
         setMessage("Industry created successfully");
       }
     } catch (error) {
+      // if (error.response.data.message.includes("E11000")) {
+      //   setError(`Industry name already exist!`);
+      // } else {
+      setError(`Something went wrong! ${error.message}`);
+      // }
+    }
+  };
+
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    setAddCategoryMessage("Processing...");
+    try {
+      const dataObj = {
+        category_name: refAddCategory.current.value,
+      };
+
+      const res = await axios.post(
+        "https://natoursny.herokuapp.com/api/v1/industry_categories",
+        dataObj
+      );
+      if (res.status === 201) {
+        setAddCategoryMessage("Category Added successfully");
+        refAddCategory.current.value = "";
+      }
+    } catch (error) {
       if (error.response.data.message.includes("E11000")) {
-        setError(`Industry name already exist!`);
+        setAddCategoryMessage("");
+        setAddCategoryError(`Category already exist!`);
       } else {
-        setError(`Something went wrong! ${error.message}`);
+        setAddCategoryMessage("");
+        setAddCategoryError(`Something went wrong! ${error.message}`);
       }
     }
   };
+
+  const handleAddType = async (e) => {
+    e.preventDefault();
+    setAddTypeMessage("Processing...");
+    try {
+      const dataObj = {
+        type_name: refAddType.current.value,
+      };
+
+      const res = await axios.post(
+        "https://natoursny.herokuapp.com/api/v1/industry_types",
+        dataObj
+      );
+      if (res.status === 201) {
+        setAddTypeMessage("Type Added successfully");
+        refAddType.current.value = "";
+      }
+    } catch (error) {
+      if (error.response.data.message.includes("E11000")) {
+        setAddTypeMessage("");
+        setAddTypeError(`Type already exist!`);
+      } else {
+        setAddTypeMessage("");
+        setAddTypeError(`Something went wrong! ${error.message}`);
+      }
+    }
+  };
+
   return (
     <>
       <div className="container-fluid px-3 py-4">
@@ -71,7 +181,7 @@ const CreateNewIndustry = () => {
                       Create New Industry
                     </legend>
                     <div className="row g-3">
-                      {/* ============================================= */}
+                      {/* ================================== */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <input
                           ref={refName}
@@ -85,37 +195,80 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_category"}
+                          defaultValue={"DEFAULT_Industry"}
                           className="form-select"
                           ref={refCategory}
-                          required
                         >
-                          <option disabled value="DEFAULT_category">
-                            Select a Category *
+                          <option disabled value="DEFAULT_Industry">
+                            Select Category
                           </option>
-                          <option value="cement">cement</option>
-                          <option value="chemical">chemical</option>
-                          <option value="cppper">coppper</option>
-                          <option value="sugar">sugar</option>
+                          {categoryList ? (
+                            categoryList.map((name) => {
+                              return (
+                                <option
+                                  key={name._id}
+                                  value={name.category_name}
+                                >
+                                  {name.category_name}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option disabled value="loading">
+                              Loading...
+                            </option>
+                          )}
                         </select>
+                      </div>
+
+                      {/* col-2 */}
+                      <div className="col-3 col-sm-2 col-xl-1">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#categoryModalContainer"
+                        >
+                          New
+                        </button>
                       </div>
 
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_industry"}
+                          defaultValue={"DEFAULT_Industry"}
                           className="form-select"
                           ref={refIndustry}
-                          required
                         >
-                          <option disabled value="DEFAULT_industry">
-                            Select a industry *
+                          <option disabled value="DEFAULT_Industry">
+                            Select Type
                           </option>
-                          <option value="CEPT">CEPT</option>
-                          <option value="dairy">Dairy</option>
-                          <option value="manufacturer">Manufacturer</option>
-                          <option value="OEM">OEM</option>
+                          {typeList ? (
+                            typeList.map((name) => {
+                              return (
+                                <option key={name._id} value={name.type_name}>
+                                  {name.type_name}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option disabled value="loading">
+                              Loading...
+                            </option>
+                          )}
                         </select>
+                      </div>
+
+                      {/* col-2 */}
+                      <div className="col-3 col-sm-2 col-xl-1">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#typeModalContainer"
+                        >
+                          New
+                        </button>
                       </div>
 
                       {/* col-10  */}
@@ -200,9 +353,6 @@ const CreateNewIndustry = () => {
                       )}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <div className="d-flex justify-content-end py-2">
-                          <button className="btn btn-secondary me-3">
-                            Cancel
-                          </button>
                           <button type="submit" className="btn btn-success">
                             Save
                           </button>
@@ -217,19 +367,20 @@ const CreateNewIndustry = () => {
         </div>
       </div>
 
-      {/* modal for model  */}
+      {/* modal create category  */}
+
       <div
         className="modal fade"
-        id="createModelContainer"
+        id="categoryModalContainer"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <form className="modal-content">
+          <form className="modal-content" onSubmit={handleAddCategory}>
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                Create Model
+                Create Category
               </h5>
               <button
                 type="button"
@@ -239,157 +390,59 @@ const CreateNewIndustry = () => {
               ></button>
             </div>
             <div className="modal-body bg-light">
-              <div className="row gy-3">
+              <div className="row gy-1">
+                {addCategoryError ? (
+                  <div className="col-12">
+                    <div className="alert alert-danger py-2" role="alert">
+                      {addCategoryError}
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {addCategoryMessage ? (
+                  <div className="col-12">
+                    <div className="alert alert-success py-2" role="alert">
+                      {addCategoryMessage}
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <div className="col-12">
                   <input
                     type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
+                    className="form-control "
+                    placeholder="Category name *"
+                    ref={refAddCategory}
                     required
                   ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_manufacture"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_manufacture">
-                      Select a Manufacture *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_category"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_category">
-                      Select a Category *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Model No."
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_fieldset"}
-                    className="form-select form-select-sm"
-                  >
-                    <option disabled value="DEFAULT_fieldset">
-                      Select a Fieldset
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
                 </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
               <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
+                Save
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      {/* modal for create Status label  */}
-      <div
-        className="modal fade"
-        id="createStatusContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Status Label
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_statusType"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_statusType">
-                      Select Status Type *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      {/* modal create type  */}
 
-      {/* modal for create Supplier  */}
       <div
         className="modal fade"
-        id="createSupplierContainer"
+        id="typeModalContainer"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <form className="modal-content">
+          <form className="modal-content" onSubmit={handleAddType}>
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                Create Supplier
+                Create Type
               </h5>
               <button
                 type="button"
@@ -399,84 +452,39 @@ const CreateNewIndustry = () => {
               ></button>
             </div>
             <div className="modal-body bg-light">
-              <div className="row gy-3">
+              <div className="row gy-1">
+                {addTypeError ? (
+                  <div className="col-12">
+                    <div className="alert alert-danger py-2" role="alert">
+                      {addTypeError}
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {addTypeMessage ? (
+                  <div className="col-12">
+                    <div className="alert alert-success py-2" role="alert">
+                      {addTypeMessage}
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <div className="col-12">
                   <input
                     type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
+                    className="form-control "
+                    placeholder="Type name *"
                     required
+                    ref={refAddType}
                   ></input>
                 </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
               <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* modal for create Location  */}
-      <div
-        className="modal fade"
-        id="createLocationContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Location
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="City *"
-                    required
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
+                Save
               </button>
             </div>
           </form>

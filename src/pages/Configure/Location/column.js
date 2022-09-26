@@ -4,31 +4,39 @@ export const COLUMNS = [
     accessor: "_id",
   },
   {
-    Header: "Name",
-    accessor: "industry_name",
+    Header: "Location name",
+    accessor: "location_name",
   },
   {
-    Header: "Category",
-    accessor: "industry_category",
+    Header: "Address",
+    accessor: "address",
   },
   {
-    Header: "Industry",
-    accessor: "industry_type",
+    Header: "City",
+    accessor: "city",
   },
   {
-    Header: "Exc. mail",
-    accessor: "exceedance_notification_mail",
+    Header: "State",
+    accessor: "state",
   },
   {
-    Header: "As",
-    accessor: "industry_as",
+    Header: "Pincode",
+    accessor: "pincode",
   },
   {
-    Header: "Partner",
-    accessor: "industry_partner",
+    Header: "Latitude",
+    accessor: "latitude",
   },
   {
-    Header: "Date",
-    accessor: "createdAt",
+    Header: "Longitude",
+    accessor: "longitude",
+  },
+  {
+    Header: "Industry code",
+    accessor: "industry_code",
+  },
+  {
+    Header: "Ganga basin",
+    accessor: "ganga_basin",
   },
 ];
