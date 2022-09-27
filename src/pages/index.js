@@ -40,3 +40,6 @@ export { default as CreateNewLocation } from "./CreateNew/Location";
 
 //update industry
 export { default as UpdateIndustry } from "./Update/Industry";
+
+//delete industry
+export { default as DeleteIndustry } from "./DeleteIndustry";

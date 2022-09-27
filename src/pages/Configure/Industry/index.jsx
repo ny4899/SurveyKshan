@@ -16,14 +16,24 @@ import axios from "axios";
 
 const Industry = () => {
   const [apiData, setApiData] = useState([]);
+  const [tableMessage, setTableMessage] = useState("");
   let navigate = useNavigate();
 
   useEffect(() => {
+    setTableMessage("Loading...");
     (async () => {
-      const result = await axios(
-        "https://natoursny.herokuapp.com/api/v1/industries"
-      );
-      setApiData(result.data.data.industries);
+      try {
+        const result = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industries"
+        );
+        if (result) {
+          setTableMessage("");
+          setApiData(result.data.data.industries);
+        }
+      } catch (error) {
+        console.log(error.message);
+        setTableMessage(`Something went wrong: ${error.message}`);
+      }
     })();
   }, []);
 
@@ -84,9 +94,7 @@ const Industry = () => {
                 <FontAwesomeIcon icon={faPen} />
               </Link>
               <span
-                onClick={() =>
-                  navigate("/CreateNewIndustry", { replace: true })
-                }
+                onClick={() => navigate("/deleteIndustry", { replace: true })}
                 className="btn btn-sm btn-danger"
                 title="Delete Industry"
               >
@@ -198,46 +206,56 @@ const Industry = () => {
               <div className="col-12">
                 <div>
                   <div className="table__container">
-                    <table {...getTableProps()}>
-                      <thead>
-                        {headerGroups.map((headerGroup) => (
-                          <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
-                              <th
-                                {...column.getHeaderProps(
-                                  column.getSortByToggleProps()
-                                )}
-                              >
-                                {column.render("Header")}
-                                <span>
-                                  {column.isSorted
-                                    ? column.isSortedDesc
-                                      ? " 🔽"
-                                      : " 🔼"
-                                    : ""}
-                                </span>
-                              </th>
-                            ))}
-                          </tr>
-                        ))}
-                      </thead>
-                      <tbody {...getTableBodyProps()}>
-                        {rows.map((row) => {
-                          prepareRow(row);
-                          return (
-                            <tr {...row.getRowProps()}>
-                              {row.cells.map((cell) => {
-                                return (
-                                  <td {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
-                                  </td>
-                                );
-                              })}
+                    {tableMessage ? (
+                      tableMessage === "Loading..." ? (
+                        <h5 className="text-center py-4">{tableMessage}</h5>
+                      ) : (
+                        <h6 className="text-center py-4 text-danger">
+                          {tableMessage}
+                        </h6>
+                      )
+                    ) : (
+                      <table {...getTableProps()}>
+                        <thead>
+                          {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(
+                                    column.getSortByToggleProps()
+                                  )}
+                                >
+                                  {column.render("Header")}
+                                  <span>
+                                    {column.isSorted
+                                      ? column.isSortedDesc
+                                        ? " 🔽"
+                                        : " 🔼"
+                                      : ""}
+                                  </span>
+                                </th>
+                              ))}
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                          ))}
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                          {rows.map((row) => {
+                            prepareRow(row);
+                            return (
+                              <tr {...row.getRowProps()}>
+                                {row.cells.map((cell) => {
+                                  return (
+                                    <td {...cell.getCellProps()}>
+                                      {cell.render("Cell")}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 </div>
               </div>

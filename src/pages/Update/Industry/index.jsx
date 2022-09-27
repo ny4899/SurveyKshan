@@ -68,8 +68,6 @@ const UpdateIndustry = () => {
         );
         setIndustryNames(res.data.data.industry_names);
       } catch (error) {
-        console.log(error);
-        console.log(error.message);
         setInputMessage(`Somthing went wrong ${error.message}`);
       }
     }
@@ -280,8 +278,12 @@ const UpdateIndustry = () => {
                 </form>
 
                 {formView === "d-none" ? (
-                  <div className="py-3 py-sm-5">
-                    <h4 className="text-center">{formMessage}</h4>
+                  <div className="py-3 py-sm-4">
+                    {formMessage === "fetching data..." ? (
+                      <h5 className="text-center">{formMessage}</h5>
+                    ) : (
+                      <h6 className="text-center text-danger">{formMessage}</h6>
+                    )}
                   </div>
                 ) : (
                   <></>
@@ -291,7 +293,7 @@ const UpdateIndustry = () => {
                   <form onSubmit={handleSubmit} className={`mt-3 ${formView}`}>
                     <fieldset>
                       <legend style={{ backgroundColor: "lavender" }}>
-                        Create New Industry
+                        Update Industry
                       </legend>
 
                       <div className="row gx-3 gy-2">
