@@ -371,11 +371,11 @@ const UpdateIndustry = () => {
                           </label>
                           <select
                             id="selectType"
-                            defaultValue={"DEFAULT_Industry"}
+                            defaultValue={""}
                             className="form-select"
                             ref={refIndustry}
                           >
-                            <option disabled value="DEFAULT_Industry">
+                            <option disabled value="">
                               Select Type
                             </option>
                             {typeList ? (
@@ -413,11 +413,11 @@ const UpdateIndustry = () => {
                           </label>
                           <select
                             id="enm"
-                            defaultValue={"DEFAULT_ENM"}
+                            defaultValue={""}
                             className="form-select"
                             ref={refENM}
                           >
-                            <option disabled value="DEFAULT_ENM">
+                            <option disabled value="">
                               Exceedance Notification mail
                             </option>
                             <option value={true}>Yes</option>
@@ -432,11 +432,11 @@ const UpdateIndustry = () => {
                           </label>
                           <select
                             id="toCPCB"
-                            defaultValue={"DEFAULT_Show_CPCB"}
+                            defaultValue={""}
                             className="form-select"
                             ref={refShowToCPCB}
                           >
-                            <option disabled value="DEFAULT_Show_CPCB">
+                            <option disabled value="">
                               Show Industry to CPCB?
                             </option>
                             <option value={true}>Yes</option>
@@ -454,11 +454,11 @@ const UpdateIndustry = () => {
                           </label>
                           <select
                             id="selectOption"
-                            defaultValue={"DEFAULT_AS"}
+                            defaultValue={""}
                             className="form-select"
                             ref={refIndustryAs}
                           >
-                            <option disabled value="DEFAULT_AS">
+                            <option disabled value="">
                               Select Option
                             </option>
                             <option value="client">client</option>
@@ -476,11 +476,11 @@ const UpdateIndustry = () => {
                           </label>
                           <select
                             id="selectPartner"
-                            defaultValue={"DEFAULT_partner"}
+                            defaultValue={""}
                             className="form-select"
                             ref={refPartner}
                           >
-                            <option disabled value="DEFAULT_partner">
+                            <option disabled value="">
                               Select Partner
                             </option>
                             <option value="envirozone">Envirozone</option>
@@ -522,7 +522,7 @@ const UpdateIndustry = () => {
                               Cancel
                             </button>
                             <button type="submit" className="btn btn-success">
-                              Save
+                              Update
                             </button>
                           </div>
                         </div>

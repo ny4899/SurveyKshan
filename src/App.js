@@ -32,7 +32,11 @@ import {
   CreateNewIndustry,
   CreateNewLocation,
   UpdateIndustry,
+  UpdateUser,
+  UpdateParameter,
   DeleteIndustry,
+  DeleteUser,
+  DeleteParameter,
   AssignedStations,
   RequestedAssets,
   EditProfile,
@@ -143,8 +147,12 @@ function App() {
           <Route path="createNewLocation" element={<CreateNewLocation />} />
           {/* Update  */}
           <Route path="updateIndustry" element={<UpdateIndustry />} />
+          <Route path="updateUser" element={<UpdateUser />} />
+          <Route path="updateParameter" element={<UpdateParameter />} />
           {/* delete  */}
           <Route path="deleteIndustry" element={<DeleteIndustry />} />
+          <Route path="deleteUser" element={<DeleteUser />} />
+          <Route path="deleteParameter" element={<DeleteParameter />} />
           {/* Admin  */}
           <Route path="assignedStations" element={<AssignedStations />} />
           <Route path="requestedAssets" element={<RequestedAssets />} />

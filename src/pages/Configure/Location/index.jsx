@@ -16,14 +16,35 @@ import axios from "axios";
 
 const Location = () => {
   const [apiData, setApiData] = useState([]);
+  const [tableMessage, setTableMessage] = useState("");
   let navigate = useNavigate();
 
   useEffect(() => {
+    setTableMessage("Loading...");
     (async () => {
-      const result = await axios(
-        "https://natoursny.herokuapp.com/api/v1/industries"
-      );
-      setApiData(result.data.data.industries);
+      try {
+        const result = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industries"
+        );
+        const data = result.data.data.industries;
+        data.forEach((item) => {
+          if (!item.location_name) item.location_name = "---";
+          if (!item.address) item.address = "---";
+          if (!item.city) item.city = "---";
+          if (!item.state) item.state = "---";
+          if (!item.pincode) item.pincode = "---";
+          if (!item.latitude) item.latitude = "---";
+          if (!item.longitude) item.longitude = "---";
+          if (!item.industry_code) item.industry_code = "---";
+          if (!item.ganga_basin) item.ganga_basin = "---";
+        });
+        if (data) {
+          setTableMessage("");
+          setApiData(data);
+        }
+      } catch (error) {
+        setTableMessage(`Something went wrong: ${error.message}`);
+      }
     })();
   }, []);
 
@@ -71,25 +92,7 @@ const Location = () => {
                 }
                 className="btn btn-sm btn-primary"
               >
-                Create New
-              </span>
-              <span
-                onClick={() =>
-                  navigate("/CreateNewIndustry", { replace: true })
-                }
-                className="btn btn-sm btn-secondary mx-2"
-                title="Edit Industry"
-              >
-                <FontAwesomeIcon icon={faPen} />
-              </span>
-              <span
-                onClick={() =>
-                  navigate("/CreateNewIndustry", { replace: true })
-                }
-                className="btn btn-sm btn-danger"
-                title="Delete Industry"
-              >
-                <FontAwesomeIcon icon={faTrash} />
+                Add location
               </span>
             </div>
           </div>
@@ -197,46 +200,56 @@ const Location = () => {
               <div className="col-12">
                 <div>
                   <div className="table__container">
-                    <table {...getTableProps()}>
-                      <thead>
-                        {headerGroups.map((headerGroup) => (
-                          <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
-                              <th
-                                {...column.getHeaderProps(
-                                  column.getSortByToggleProps()
-                                )}
-                              >
-                                {column.render("Header")}
-                                <span>
-                                  {column.isSorted
-                                    ? column.isSortedDesc
-                                      ? " 🔽"
-                                      : " 🔼"
-                                    : ""}
-                                </span>
-                              </th>
-                            ))}
-                          </tr>
-                        ))}
-                      </thead>
-                      <tbody {...getTableBodyProps()}>
-                        {rows.map((row) => {
-                          prepareRow(row);
-                          return (
-                            <tr {...row.getRowProps()}>
-                              {row.cells.map((cell) => {
-                                return (
-                                  <td {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
-                                  </td>
-                                );
-                              })}
+                    {tableMessage ? (
+                      tableMessage === "Loading..." ? (
+                        <h5 className="text-center py-4">{tableMessage}</h5>
+                      ) : (
+                        <h6 className="text-center py-4 text-danger">
+                          {tableMessage}
+                        </h6>
+                      )
+                    ) : (
+                      <table {...getTableProps()}>
+                        <thead>
+                          {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(
+                                    column.getSortByToggleProps()
+                                  )}
+                                >
+                                  {column.render("Header")}
+                                  <span>
+                                    {column.isSorted
+                                      ? column.isSortedDesc
+                                        ? " 🔽"
+                                        : " 🔼"
+                                      : ""}
+                                  </span>
+                                </th>
+                              ))}
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                          ))}
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                          {rows.map((row) => {
+                            prepareRow(row);
+                            return (
+                              <tr {...row.getRowProps()}>
+                                {row.cells.map((cell, i) => {
+                                  return (
+                                    <td {...cell.getCellProps()}>
+                                      {cell.render("Cell")}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 </div>
               </div>

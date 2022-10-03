@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { COLUMNS } from "./column";
 import GlobalFilter from "../../../common/GlobalFilter";
@@ -17,7 +17,6 @@ import axios from "axios";
 const Industry = () => {
   const [apiData, setApiData] = useState([]);
   const [tableMessage, setTableMessage] = useState("");
-  let navigate = useNavigate();
 
   useEffect(() => {
     setTableMessage("Loading...");
@@ -26,12 +25,23 @@ const Industry = () => {
         const result = await axios(
           "https://natoursny.herokuapp.com/api/v1/industries"
         );
+        const data = result.data.data.industries;
+        data.forEach((item) => {
+          if (!item._id) item._id = "---";
+          if (!item.industry_name) item.industry_name = "---";
+          if (!item.industry_category) item.industry_category = "---";
+          if (!item.industry_type) item.industry_type = "---";
+          if (!item.exceedance_notification_mail)
+            item.exceedance_notification_mail = "---";
+          if (!item.industry_as) item.industry_as = "---";
+          if (!item.industry_partner) item.industry_partner = "---";
+          if (!item.createdAt) item.createdAt = "---";
+        });
         if (result) {
           setTableMessage("");
           setApiData(result.data.data.industries);
         }
       } catch (error) {
-        console.log(error.message);
         setTableMessage(`Something went wrong: ${error.message}`);
       }
     })();
@@ -72,34 +82,26 @@ const Industry = () => {
         <div className="col-12">
           <div className="d-flex justify-content-between">
             <div>
-              <p className="fs-5 m-0">People</p>
+              <p className="fs-5 m-0">Industry</p>
             </div>
             <div className="d-flex">
-              <span
-                onClick={() =>
-                  navigate("/CreateNewIndustry", { replace: true })
-                }
-                className="btn btn-sm btn-primary"
-              >
+              <Link to="/CreateNewIndustry" className="btn btn-sm btn-primary">
                 Create New
-              </span>
+              </Link>
               <Link
-                onClick={() =>
-                  navigate("/CreateNewIndustry", { replace: true })
-                }
                 className="btn btn-sm btn-secondary mx-2"
                 title="Edit Industry"
                 to="/updateIndustry"
               >
                 <FontAwesomeIcon icon={faPen} />
               </Link>
-              <span
-                onClick={() => navigate("/deleteIndustry", { replace: true })}
+              <Link
                 className="btn btn-sm btn-danger"
                 title="Delete Industry"
+                to="/deleteIndustry"
               >
                 <FontAwesomeIcon icon={faTrash} />
-              </span>
+              </Link>
             </div>
           </div>
         </div>

@@ -14,7 +14,7 @@ div,
 input {
   color: v.$black;
 }
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -33,11 +33,11 @@ code {
     monospace;
 }
 
-fieldset, legend {
+fieldset,
+legend {
   all: revert !important;
-
 }
-legend{
+legend {
   background-color: v.$bodybg !important;
   margin-bottom: 15px !important;
   border-radius: 7px !important;

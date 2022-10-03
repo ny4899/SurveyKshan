@@ -4,6 +4,8 @@ import React, { useRef, useState, useEffect } from "react";
 const CreateNewUser = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [industryList, setIndustryList] = useState("");
+  const [industryListMessage, setIndustryListMessage] = useState("Loading...");
   const refName = useRef(null);
   const refLastname = useRef(null);
   const refUsername = useRef(null);
@@ -14,7 +16,6 @@ const CreateNewUser = () => {
   const refCity = useRef(null);
   const refAddress = useRef(null);
   const refState = useRef(null);
-  const refExpirein = useRef(null);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -27,6 +28,21 @@ const CreateNewUser = () => {
       clearTimeout(timeId);
     };
   }, [message, error]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios(
+          "https://natoursny.herokuapp.com/api/v1/industry_names"
+        );
+        setIndustryListMessage("");
+        setIndustryList(res.data.data.industry_names);
+      } catch (error) {
+        setIndustryListMessage(`Somthing went wrong ${error.message}`);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     try {
@@ -42,7 +58,6 @@ const CreateNewUser = () => {
         city: refCity.current.value,
         address: refAddress.current.value,
         state: refState.current.value,
-        expire_in: refExpirein.current.value,
       };
       const res = await axios.post(
         "https://natoursny.herokuapp.com/api/v1/users",
@@ -116,15 +131,6 @@ const CreateNewUser = () => {
                       </div>
                       <div className="col-9 col-sm-10 col-xl-11">
                         <input
-                          ref={refExpirein}
-                          required
-                          type="number"
-                          className="form-control"
-                          placeholder="Expire in *"
-                        ></input>
-                      </div>
-                      <div className="col-9 col-sm-10 col-xl-11">
-                        <input
                           ref={refEmail}
                           type="email"
                           className="form-control"
@@ -132,12 +138,28 @@ const CreateNewUser = () => {
                         ></input>
                       </div>
                       <div className="col-9 col-sm-10 col-xl-11">
-                        <input
+                        <select
+                          defaultValue={""}
+                          className="form-select"
                           ref={refIndustry}
-                          type="text"
-                          className="form-control"
-                          placeholder="Industry"
-                        ></input>
+                        >
+                          <option disabled value="">
+                            Select Type
+                          </option>
+                          {industryList ? (
+                            industryList.map((name) => {
+                              return (
+                                <option key={name._id} value={name._id}>
+                                  {name.industry_name}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option disabled value="loading">
+                              {industryListMessage}
+                            </option>
+                          )}
+                        </select>
                       </div>
                       <div className="col-9 col-sm-10 col-xl-11">
                         <input

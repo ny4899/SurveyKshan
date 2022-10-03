@@ -91,7 +91,6 @@ const CreateNewIndustry = () => {
         industry_as: refIndustryAs.current.value,
         industry_partner: refPartner.current.value,
       };
-      console.log(dataObj);
       const res = await axios.post(
         "https://natoursny.herokuapp.com/api/v1/industries",
         dataObj
@@ -100,11 +99,13 @@ const CreateNewIndustry = () => {
         setMessage("Industry created successfully");
       }
     } catch (error) {
-      // if (error.response.data.message.includes("E11000")) {
-      //   setError(`Industry name already exist!`);
-      // } else {
-      setError(`Something went wrong! ${error.message}`);
-      // }
+      if (error.response.data.message.includes("E11000")) {
+        setMessage("");
+        setError(`Industry name already exist!`);
+      } else {
+        setMessage("");
+        setError(`Something went wrong! ${error.message}`);
+      }
     }
   };
 
@@ -195,11 +196,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_Industry"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refCategory}
                         >
-                          <option disabled value="DEFAULT_Industry">
+                          <option disabled value="">
                             Select Category
                           </option>
                           {categoryList ? (
@@ -236,11 +237,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_Industry"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refIndustry}
                         >
-                          <option disabled value="DEFAULT_Industry">
+                          <option disabled value="">
                             Select Type
                           </option>
                           {typeList ? (
@@ -274,11 +275,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_ENM"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refENM}
                         >
-                          <option disabled value="DEFAULT_ENM">
+                          <option disabled value="">
                             Exceedance Notification mail
                           </option>
                           <option value={true}>Yes</option>
@@ -289,11 +290,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_Show_CPCB"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refShowToCPCB}
                         >
-                          <option disabled value="DEFAULT_Show_CPCB">
+                          <option disabled value="">
                             Show Industry to CPCB?
                           </option>
                           <option value={true}>Yes</option>
@@ -304,11 +305,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_AS"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refIndustryAs}
                         >
-                          <option disabled value="DEFAULT_AS">
+                          <option disabled value="">
                             Select Option
                           </option>
                           <option value="client">client</option>
@@ -319,11 +320,11 @@ const CreateNewIndustry = () => {
                       {/* col-10  */}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_partner"}
+                          defaultValue={""}
                           className="form-select"
                           ref={refPartner}
                         >
-                          <option disabled value="DEFAULT_partner">
+                          <option disabled value="">
                             Select Partner
                           </option>
                           <option value="envirozone">Envirozone</option>

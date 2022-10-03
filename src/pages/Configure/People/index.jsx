@@ -1,25 +1,51 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { COLUMNS } from "./column";
 import GlobalFilter from "../../../common/GlobalFilter";
 import { IndeterminateCheckbox } from "../../../common/IndeterminateCheckbox";
 
-import { faDownload, faRotate } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDownload,
+  faRotate,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 
 const People = () => {
   const [apiData, setApiData] = useState([]);
-  let navigate = useNavigate();
+  const [tableMessage, setTableMessage] = useState("");
 
   useEffect(() => {
+    setTableMessage("Loading...");
     (async () => {
-      const result = await axios(
-        "https://natoursny.herokuapp.com/api/v1/users"
-      );
-      // console.log(result);
-      setApiData(result.data.data.users);
+      try {
+        const result = await axios(
+          "https://natoursny.herokuapp.com/api/v1/users"
+        );
+        const data = result.data.data.users;
+        data.forEach((item) => {
+          if (!item.name) item.name = "---";
+          if (!item.last_name) item.last_name = "---";
+          if (!item.username) item.username = "---";
+          if (!item.password) item.password = "---";
+          if (!item.email) item.email = "---";
+          if (!item.industry) item.industry = "---";
+          if (!item.phone) item.phone = "---";
+          if (!item.city) item.city = "---";
+          if (!item.address) item.address = "---";
+          if (!item.state) item.state = "---";
+        });
+        // console.log(result);
+        if (data) {
+          setTableMessage("");
+          setApiData(data);
+        }
+      } catch (error) {
+        setTableMessage(`Something went wrong: ${error.message}`);
+      }
     })();
   }, []);
 
@@ -61,12 +87,23 @@ const People = () => {
               <p className="fs-5 m-0">People</p>
             </div>
             <div className="d-flex">
-              <a
-                onClick={() => navigate("/createNewUser", { replace: true })}
-                className="btn btn-sm btn-primary"
-              >
+              <Link className="btn btn-sm btn-primary" to="/createNewUser">
                 Create New
-              </a>
+              </Link>
+              <Link
+                className="btn btn-sm btn-secondary mx-2"
+                title="Edit Industry"
+                to="/updateUser"
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </Link>
+              <Link
+                className="btn btn-sm btn-danger"
+                title="Delete Industry"
+                to="/deleteUser"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </Link>
             </div>
           </div>
         </div>
@@ -173,46 +210,56 @@ const People = () => {
               <div className="col-12">
                 <div>
                   <div className="table__container">
-                    <table {...getTableProps()}>
-                      <thead>
-                        {headerGroups.map((headerGroup) => (
-                          <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
-                              <th
-                                {...column.getHeaderProps(
-                                  column.getSortByToggleProps()
-                                )}
-                              >
-                                {column.render("Header")}
-                                <span>
-                                  {column.isSorted
-                                    ? column.isSortedDesc
-                                      ? " 🔽"
-                                      : " 🔼"
-                                    : ""}
-                                </span>
-                              </th>
-                            ))}
-                          </tr>
-                        ))}
-                      </thead>
-                      <tbody {...getTableBodyProps()}>
-                        {rows.map((row) => {
-                          prepareRow(row);
-                          return (
-                            <tr {...row.getRowProps()}>
-                              {row.cells.map((cell) => {
-                                return (
-                                  <td {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
-                                  </td>
-                                );
-                              })}
+                    {tableMessage ? (
+                      tableMessage === "Loading..." ? (
+                        <h5 className="text-center py-4">{tableMessage}</h5>
+                      ) : (
+                        <h6 className="text-center py-4 text-danger">
+                          {tableMessage}
+                        </h6>
+                      )
+                    ) : (
+                      <table {...getTableProps()}>
+                        <thead>
+                          {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(
+                                    column.getSortByToggleProps()
+                                  )}
+                                >
+                                  {column.render("Header")}
+                                  <span>
+                                    {column.isSorted
+                                      ? column.isSortedDesc
+                                        ? " 🔽"
+                                        : " 🔼"
+                                      : ""}
+                                  </span>
+                                </th>
+                              ))}
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                          ))}
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                          {rows.map((row) => {
+                            prepareRow(row);
+                            return (
+                              <tr {...row.getRowProps()}>
+                                {row.cells.map((cell) => {
+                                  return (
+                                    <td {...cell.getCellProps()}>
+                                      {cell.render("Cell")}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 </div>
               </div>

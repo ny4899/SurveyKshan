@@ -4,6 +4,10 @@ export const COLUMNS = [
     accessor: "_id",
   },
   {
+    Header: "Industry name",
+    accessor: "industry_name",
+  },
+  {
     Header: "Location name",
     accessor: "location_name",
   },

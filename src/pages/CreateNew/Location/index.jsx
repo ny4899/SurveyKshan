@@ -6,6 +6,8 @@ const CreateNewLocation = () => {
   const [selectedIndustryId, setSelectedIndustryId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [formView, setformView] = useState("d-block");
+  const [formMessage, setFormMessage] = useState("fetching data...");
 
   const refSelectedIndustry = useRef("");
 
@@ -45,13 +47,58 @@ const CreateNewLocation = () => {
     fetchData();
   }, []);
 
+  const getAllIndustries = async () => {
+    try {
+      const res = await axios(
+        `https://natoursny.herokuapp.com/api/v1/industries/${selectedIndustryId}`
+      );
+
+      if (res.status === 200) {
+        const {
+          location_name,
+          address,
+          city,
+          state,
+          pincode,
+          latitude,
+          longitude,
+          industry_code,
+          ganga_basin,
+        } = res.data.data.industry;
+
+        refLocationName.current.value = location_name;
+        refAddress.current.value = address;
+        refCity.current.value = city;
+        refState.current.value = state;
+        refPincode.current.value = pincode;
+        refLatitude.current.value = latitude;
+        refLongitude.current.value = longitude;
+        refIndustrycode.current.value = industry_code;
+        refGangaBasin.current.value = ganga_basin;
+      } else {
+        setFormMessage(`Unable to fetch: try again!`);
+      }
+      setformView("d-block");
+    } catch (error) {
+      setFormMessage(`Something went wrong: ${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedIndustryId) {
+      getAllIndustries();
+    }
+  }, [selectedIndustryId]);
+
   const handleSelectedIndustry = (e) => {
     e.preventDefault();
+    setformView("d-none");
     setSelectedIndustryId(refSelectedIndustry.current.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("processing!");
     try {
       const dataObj = {
         location_name: refLocationName.current.value,
@@ -98,12 +145,12 @@ const CreateNewLocation = () => {
                       {/* ================*/}
                       <div className="col-9 col-sm-10 col-xl-11">
                         <select
-                          defaultValue={"DEFAULT_Industry"}
+                          defaultValue={""}
                           className="form-select mb-3"
                           ref={refSelectedIndustry}
                           onChange={handleSelectedIndustry}
                         >
-                          <option disabled value="DEFAULT_Industry">
+                          <option disabled value="">
                             Select industry
                           </option>
                           {industryNames ? (
@@ -125,24 +172,48 @@ const CreateNewLocation = () => {
                     </div>
                   </fieldset>
                 </form>
+
+                {formView === "d-none" ? (
+                  <div className="py-3 py-sm-4">
+                    {formMessage === "fetching data..." ? (
+                      <h5 className="text-center">{formMessage}</h5>
+                    ) : (
+                      <h6 className="text-center text-danger">{formMessage}</h6>
+                    )}
+                  </div>
+                ) : (
+                  <></>
+                )}
+
                 {selectedIndustryId ? (
-                  <form onSubmit={handleSubmit} className="mt-4">
+                  <form onSubmit={handleSubmit} className={`mt-3 ${formView}`}>
                     <fieldset>
                       <legend style={{ backgroundColor: "lavender" }}>
                         Add Location
                       </legend>
-                      <div className="row g-3">
+                      <div className="row gx-3 gy-2">
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label
+                            htmlFor="locationName"
+                            className="col-form-label"
+                          >
+                            Location name :
+                          </label>
                           <input
                             ref={refLocationName}
                             required
+                            id="locationName"
                             type="text"
                             className="form-control"
                             placeholder="Location name *"
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="address" className="col-form-label">
+                            Address :
+                          </label>
                           <input
+                            id="address"
                             ref={refAddress}
                             type="text"
                             className="form-control"
@@ -150,7 +221,11 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="city" className="col-form-label">
+                            City :
+                          </label>
                           <input
+                            id="city"
                             ref={refCity}
                             type="text"
                             className="form-control"
@@ -158,7 +233,11 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="state" className="col-form-label">
+                            State :
+                          </label>
                           <input
+                            id="state"
                             ref={refState}
                             type="text"
                             className="form-control"
@@ -166,7 +245,11 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="pincode" className="col-form-label">
+                            Pincode :
+                          </label>
                           <input
+                            id="pincode"
                             ref={refPincode}
                             type="number"
                             className="form-control"
@@ -174,7 +257,11 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="latitude" className="col-form-label">
+                            Latitude :
+                          </label>
                           <input
+                            id="latitude"
                             ref={refLatitude}
                             type="number"
                             className="form-control"
@@ -183,7 +270,11 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label htmlFor="longitude" className="col-form-label">
+                            Longitude :
+                          </label>
                           <input
+                            id="longitude"
                             ref={refLongitude}
                             type="number"
                             className="form-control"
@@ -192,7 +283,14 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
+                          <label
+                            htmlFor="industryCode"
+                            className="col-form-label"
+                          >
+                            Industry code :
+                          </label>
                           <input
+                            id="industryCode"
                             ref={refIndustrycode}
                             type="text"
                             className="form-control"
@@ -200,39 +298,30 @@ const CreateNewLocation = () => {
                           ></input>
                         </div>
                         <div className="col-9 col-sm-10 col-xl-11">
-                          <input
+                          <label
+                            htmlFor="gangaBasin"
+                            className="col-form-label"
+                          >
+                            Ganga Basin :
+                          </label>
+                          <select
+                            id="gangaBasin"
+                            defaultValue={""}
+                            className="form-select"
                             ref={refGangaBasin}
-                            type="text"
-                            className="form-control"
-                            placeholder="Ganga Basin"
-                          ></input>
+                          >
+                            <option
+                              disabled
+                              style={{ color: "red !important" }}
+                              value=""
+                            >
+                              Ganga Basin
+                            </option>
+                            <option value={true}>Yes</option>
+                            <option value={false}>no</option>
+                          </select>
                         </div>
-                        <div className="col-9 col-sm-10 col-xl-11">
-                          <input
-                            ref={refState}
-                            type="text"
-                            className="form-control"
-                            placeholder="State"
-                          ></input>
-                        </div>
-                        {/* ============================================= */}
-                        {/* col-10  */}
-                        {/* <div className="col-9 col-sm-10 col-xl-11">
-                        <select
-                          defaultValue={"DEFAULT_Industry"}
-                          className="form-select"
-                        >
-                          <option disabled value="DEFAULT_Industry">
-                            about
-                          </option>
-                          <option value="team leader">team leader</option>
-                          <option value="owner">owner</option>
-                          <option value="office boy">office boy</option>
-                        </select> 
-                      </div> */}
-
-                        {/* col-10  */}
-
+                        {/* ========== */}
                         {message && (
                           <div className="col-9 col-sm-10 col-xl-11">
                             <div
@@ -269,272 +358,6 @@ const CreateNewLocation = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* modal for model  */}
-      <div
-        className="modal fade"
-        id="createModelContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Model
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_manufacture"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_manufacture">
-                      Select a Manufacture *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_category"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_category">
-                      Select a Category *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Model No."
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_fieldset"}
-                    className="form-select form-select-sm"
-                  >
-                    <option disabled value="DEFAULT_fieldset">
-                      Select a Fieldset
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* modal for create Status label  */}
-      <div
-        className="modal fade"
-        id="createStatusContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Status Label
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <select
-                    defaultValue={"DEFAULT_statusType"}
-                    className="form-select form-select-sm"
-                    required
-                  >
-                    <option disabled value="DEFAULT_statusType">
-                      Select Status Type *
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* modal for create Supplier  */}
-      <div
-        className="modal fade"
-        id="createSupplierContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Supplier
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* modal for create Location  */}
-      <div
-        className="modal fade"
-        id="createLocationContainer"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <form className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Create Location
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body bg-light">
-              <div className="row gy-3">
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="Name *"
-                    required
-                  ></input>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    placeholder="City *"
-                    required
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary btn-sm">
-                Save changes
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </>
