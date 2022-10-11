@@ -143,7 +143,7 @@ const CreateNewIndustry = () => {
       const dataObj = {
         type_name: refAddType.current.value,
       };
-
+      console.log(dataObj);
       const res = await axios.post(
         "https://natoursny.herokuapp.com/api/v1/industry_types",
         dataObj

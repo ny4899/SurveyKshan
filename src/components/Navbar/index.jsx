@@ -133,16 +133,6 @@ const Navbar = ({ toggleClass, setUser }) => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/createNewDevice" className="dropdown-item">
-                    Device
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/createNewConsumable" className="dropdown-item">
-                    Consumable
-                  </NavLink>
-                </li>
-                <li>
                   <NavLink to="/createNewParameter" className="dropdown-item">
                     Parameter
                   </NavLink>
@@ -317,36 +307,6 @@ const Navbar = ({ toggleClass, setUser }) => {
                   onClick={navHideOnSm}
                 >
                   Licenses
-                </NavLink>
-              </h2>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <NavLink
-                  to="/devices"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "active accordion-button px-3"
-                      : "accordion-button px-3"
-                  }
-                  onClick={navHideOnSm}
-                >
-                  Devices
-                </NavLink>
-              </h2>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <NavLink
-                  to="/consumables"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "active accordion-button px-3"
-                      : "accordion-button px-3"
-                  }
-                  onClick={navHideOnSm}
-                >
-                  Consumables
                 </NavLink>
               </h2>
             </div>

@@ -351,7 +351,6 @@ const UpdateIndustry = () => {
                         {/* col-2 */}
                         <div className="col-3 col-sm-2 col-xl-1 d-flex align-items-end ">
                           <button
-                            onClick={() => refAddCategory.current.focus()}
                             type="button"
                             className="btn btn-secondary d-inline-block"
                             data-bs-toggle="modal"

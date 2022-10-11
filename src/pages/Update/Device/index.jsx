@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 
-const CreateNewDevice = () => {
+const UpdateDevice = () => {
   const [industryNames, setIndustryNames] = useState("");
+  const [deviceNames, setDeviceNames] = useState("");
   const [selectedIndustryId, setSelectedIndustryId] = useState("");
+  const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [deviceCategoryList, setDeviceCategoryList] = useState("");
   const [deviceManufacturersList, setDeviceManufacturersList] = useState("");
   const [deviceSupplierList, setDeviceSupplierList] = useState("");
@@ -22,8 +24,11 @@ const CreateNewDevice = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [formView, setformView] = useState("d-none");
+  const [deviceFormView, setDeviceFormView] = useState("d-none");
+  const [formMessage, setFormMessage] = useState("fetching data...");
 
-  const refSelectedIndustry = useRef("");
+  const refSelectedIndustry = useRef(null);
+  const refSelectedDevice = useRef(null);
 
   const refAddDeviceCategory = useRef("");
   const refAddDeviceManufacturer = useRef("");
@@ -124,15 +129,83 @@ const CreateNewDevice = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (selectedIndustryId) {
+      async function fetchData() {
+        try {
+          const res = await axios(
+            `https://natoursny.herokuapp.com/api/v1/device/${selectedIndustryId}`
+          );
+          setDeviceNames(res.data.data.devices);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+      fetchData();
+    }
+  }, [selectedIndustryId]);
+
+  const getDeviceData = async () => {
+    try {
+      const res = await axios(
+        `https://natoursny.herokuapp.com/api/v1/device/${selectedIndustryId}/${selectedDeviceId}`
+      );
+      if (res.status === 200) {
+        const {
+          device_name,
+          device_category,
+          device_supplier,
+          device_manufacturer,
+          device_model_number,
+        } = res.data.data.device;
+
+        refDeviceName.current.value = device_name;
+        refDeviceCategory.current.value = device_category;
+        refDeviceManufacturer.current.value = device_manufacturer;
+        refDeviceSupplier.current.value = device_supplier;
+        refDeviceModelNumber.current.value = device_model_number;
+      } else {
+        setFormMessage(`Unable to fetch: try again!`);
+      }
+      setformView("d-block");
+    } catch (error) {
+      setFormMessage(`Something went wrong: ${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      selectedDeviceId &&
+      deviceCategoryList &&
+      deviceManufacturersList &&
+      deviceSupplierList
+    ) {
+      getDeviceData();
+    }
+  }, [
+    selectedDeviceId,
+    deviceCategoryList,
+    deviceManufacturersList,
+    deviceSupplierList,
+  ]);
+
   const handleSelectedIndustry = (e) => {
     e.preventDefault();
     setSelectedIndustryId(refSelectedIndustry.current.value);
+    setDeviceFormView("d-block");
+    setSelectedDeviceId("");
+  };
+
+  const handleSelectedDevice = (e) => {
+    e.preventDefault();
+    setSelectedDeviceId(refSelectedDevice.current.value);
     setformView("d-block");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("processing...");
+    console.log(selectedIndustryId, selectedDeviceId);
     try {
       const dataObj = {
         device_name: refDeviceName.current.value,
@@ -141,15 +214,17 @@ const CreateNewDevice = () => {
         device_manufacturer: refDeviceManufacturer.current.value,
         device_model_number: refDeviceModelNumber.current.value,
       };
+      console.log(dataObj);
       const res = await axios.patch(
-        `https://natoursny.herokuapp.com/api/v1/device/${selectedIndustryId}`,
+        `https://natoursny.herokuapp.com/api/v1/device/update/${selectedIndustryId}/${selectedDeviceId}`,
         dataObj
       );
       if (res.status === 201) {
         setError("");
-        setMessage("Device added successfully!");
+        setMessage("Device updated successfully!");
       }
     } catch (error) {
+      console.log(error);
       setMessage("");
       if (error.response.data.message) {
         setError(`${error.response.data.message}!`);
@@ -269,7 +344,9 @@ const CreateNewDevice = () => {
                           ref={refSelectedIndustry}
                           onChange={handleSelectedIndustry}
                         >
-                          <option value="">Select industry</option>
+                          <option disabled value="">
+                            Select industry
+                          </option>
                           {industryNames ? (
                             industryNames.map((name) => {
                               return (
@@ -279,7 +356,9 @@ const CreateNewDevice = () => {
                               );
                             })
                           ) : (
-                            <option value="loading">Loading...</option>
+                            <option disabled value="loading">
+                              Loading...
+                            </option>
                           )}
                         </select>
                       </div>
@@ -289,10 +368,47 @@ const CreateNewDevice = () => {
                 </form>
 
                 {selectedIndustryId ? (
+                  <form className={`mt-3 ${deviceFormView}`}>
+                    <fieldset>
+                      <legend style={{ backgroundColor: "lavender" }}>
+                        Select Device
+                      </legend>
+                      <div className="row g-3">
+                        <div className="col-9 col-sm-10 col-xl-11">
+                          <select
+                            defaultValue={""}
+                            className="form-select mb-3"
+                            ref={refSelectedDevice}
+                            onChange={handleSelectedDevice}
+                          >
+                            <option value="">Select Device</option>
+                            {deviceNames ? (
+                              deviceNames.map((name) => {
+                                return (
+                                  <option key={name._id} value={name._id}>
+                                    {name.device_name}
+                                  </option>
+                                );
+                              })
+                            ) : (
+                              <option disabled value="loading">
+                                Loading...
+                              </option>
+                            )}
+                          </select>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </form>
+                ) : (
+                  <></>
+                )}
+
+                {selectedIndustryId && selectedDeviceId ? (
                   <form onSubmit={handleSubmit} className={`mt-3 ${formView}`}>
                     <fieldset>
                       <legend style={{ backgroundColor: "lavender" }}>
-                        Add Device
+                        Update Device
                       </legend>
                       <div className="row g-3">
                         <div className="col-9 col-sm-10 col-xl-11">
@@ -313,7 +429,7 @@ const CreateNewDevice = () => {
                             className="form-select"
                             ref={refDeviceCategory}
                           >
-                            <option value="">Select Category</option>
+                            <option value="">Category</option>
                             {deviceCategoryList ? (
                               deviceCategoryList.map((name) => {
                                 return (
@@ -351,7 +467,7 @@ const CreateNewDevice = () => {
                             className="form-select"
                             ref={refDeviceManufacturer}
                           >
-                            <option value="">Select Manufacturer</option>
+                            <option value="">Manufacturer</option>
                             {deviceManufacturersList ? (
                               deviceManufacturersList.map((name) => {
                                 return (
@@ -364,7 +480,9 @@ const CreateNewDevice = () => {
                                 );
                               })
                             ) : (
-                              <option value="loading">Loading...</option>
+                              <option disabled value="loading">
+                                Loading...
+                              </option>
                             )}
                           </select>
                         </div>
@@ -389,7 +507,7 @@ const CreateNewDevice = () => {
                             className="form-select"
                             ref={refDeviceSupplier}
                           >
-                            <option value="">Select Supplier</option>
+                            <option value="">Supplier</option>
                             {deviceSupplierList ? (
                               deviceSupplierList.map((name) => {
                                 return (
@@ -402,7 +520,9 @@ const CreateNewDevice = () => {
                                 );
                               })
                             ) : (
-                              <option value="loading">Loading...</option>
+                              <option disabled value="loading">
+                                Loading...
+                              </option>
                             )}
                           </select>
                         </div>
@@ -664,4 +784,4 @@ const CreateNewDevice = () => {
   );
 };
 
-export default CreateNewDevice;
+export default UpdateDevice;

@@ -1,7 +1,6 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Stations } from "./Stations";
 export { default as Licenses } from "./Licenses";
-export { default as Devices } from "./Configure/Devices";
 export { default as Consumables } from "./Consumables";
 export { default as Parameters } from "./Parameters";
 export { default as Maintenance } from "./Maintenance";
@@ -14,6 +13,7 @@ export { default as Industry } from "./Configure/Industry";
 export { default as Location } from "./Configure/Location";
 export { default as CameraConfig } from "./Configure/CameraConfig";
 export { default as DataSettings } from "./Configure/DataSettings";
+export { default as Devices } from "./Configure/Devices";
 
 // setting sidebasr tab pages
 export { default as Audit } from "./Settings/Audit";
@@ -42,8 +42,10 @@ export { default as CreateNewLocation } from "./CreateNew/Location";
 export { default as UpdateIndustry } from "./Update/Industry";
 export { default as UpdateUser } from "./Update/User";
 export { default as UpdateParameter } from "./Update/Parameter";
+export { default as UpdateDevice } from "./Update/Device";
 
 //delete industry
 export { default as DeleteIndustry } from "./Delete/DeleteIndustry";
 export { default as DeleteUser } from "./Delete/DeleteUser";
 export { default as DeleteParameter } from "./Delete/DeleteParameter";
+export { default as DeleteDevice } from "./Delete/DeleteDevice";

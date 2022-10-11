@@ -34,9 +34,11 @@ import {
   UpdateIndustry,
   UpdateUser,
   UpdateParameter,
+  UpdateDevice,
   DeleteIndustry,
   DeleteUser,
   DeleteParameter,
+  DeleteDevice,
   AssignedStations,
   RequestedAssets,
   EditProfile,
@@ -149,10 +151,12 @@ function App() {
           <Route path="updateIndustry" element={<UpdateIndustry />} />
           <Route path="updateUser" element={<UpdateUser />} />
           <Route path="updateParameter" element={<UpdateParameter />} />
+          <Route path="updateDevice" element={<UpdateDevice />} />
           {/* delete  */}
           <Route path="deleteIndustry" element={<DeleteIndustry />} />
           <Route path="deleteUser" element={<DeleteUser />} />
           <Route path="deleteParameter" element={<DeleteParameter />} />
+          <Route path="deleteDevice" element={<DeleteDevice />} />
           {/* Admin  */}
           <Route path="assignedStations" element={<AssignedStations />} />
           <Route path="requestedAssets" element={<RequestedAssets />} />
